@@ -1,0 +1,13 @@
+{
+  "name": "demon-slayer",
+  "version": "1.0.0",
+  "description": "A side-scroller beat-em-up game based on the show Demon Slayer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack --watch --mode=development",
+    "postinstall": "webpack"
+  },
+  "author": "",
+  "license": "ISC"
+}
