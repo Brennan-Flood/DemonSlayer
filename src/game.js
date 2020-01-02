@@ -26,6 +26,9 @@ Game.prototype.draw = function draw(ctx) {
   this.objects().forEach(object => {
     object.draw(ctx);
   });
+  this.enemies.forEach(enemy => {
+    enemy.draw(ctx);
+  })
   this.playerAttack.draw(ctx);
 };
 
@@ -80,21 +83,20 @@ Game.prototype.addPlayerAttack = function addPlayerAttack() {
 };
 
 Game.prototype.addEnemies = function addEnemies() {
-  let pos1 = [100, 100];
-  let pos2 = [200, 100];
-  let pos3 = [300, 100];
+  let pos1 = [75, 300];
+  let pos2 = [350, 100];
+  let pos3 = [625, 300];
 
-  let enemy1 = new Enemy(pos1);
-  let enemy2 = new Enemy(pos2);
-  let enemy3 = new Enemy(pos3);
+  let enemy1 = new Enemy(pos1, 1);
+  let enemy2 = new Enemy(pos2, 2);
+  let enemy3 = new Enemy(pos3, 3);
   this.enemies.push(enemy1);
   this.enemies.push(enemy2);
   this.enemies.push(enemy3);
-  console.log(this.enemies);
 };
 
 Game.prototype.objects = function objects() {
-  return [].concat(this.platforms).concat(this.players).concat(this.enemies);
+  return [].concat(this.platforms).concat(this.players);
 };
 
 Game.prototype.move = function move(dt) {
@@ -102,6 +104,9 @@ Game.prototype.move = function move(dt) {
     object.move(dt);
   });
   this.playerPos = this.players[0].pos;
+  this.enemies.forEach(enemy => {
+    enemy.move(dt, this.playerPos);
+  })
   this.playerAttack.move(this.playerPos);
 };
 
@@ -119,6 +124,18 @@ Game.prototype.getPlayerDirection = function getPlayerDirection() {
   } else {
     return;
   }
+};
+
+Game.prototype.playerAttackCollision = function playerAttackCollision(enemyPos) {
+  
+};
+
+Game.prototype.killEnemy = function killEnemy(enemyId) {
+  this.enemies.forEach((enemy, i) => {
+    if (enemy.id === enemyId) {
+      this.enemies = this.enemies.splice(i, 1);
+    }
+  })
 };
 
 module.exports = Game;

@@ -65,7 +65,7 @@ Player.prototype.move = function move(dt) {
 
 Player.prototype.jump = function jump() {
   if (this.vel[1] === 0 && ( Util.onPlatform(this.pos, this.radius, this.vel) !== false || Util.atFloor(this) !== false) ) {
-  this.vel[1] = -15;
+  this.vel[1] = -16;
   this.jumpFramesLeft = 6;
   this.jumpsLeft = 1;
   } else if (this.jumpsLeft === 1) {

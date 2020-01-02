@@ -1,11 +1,16 @@
 const Util = require("./util");
 
-function Enemy(pos) {
+function Enemy(pos, id) {
   this.pos = pos;
   this.vel = [0, 1];
   this.grav = 1;
   this.radius = 30;
   this.jumping = false;
+  this.playerPos = null
+  this.runSpeed = 2;
+  this.jumpSpeed = -22;
+  this.jumpCooldown = 0;
+  this.id = id;
 }
 
 Enemy.prototype.draw = function draw(ctx) {
@@ -19,7 +24,7 @@ Enemy.prototype.draw = function draw(ctx) {
 
 const NORMAL_FRAME_TIME_DELTA = 1000 / 60;
 
-Enemy.prototype.move = function move(dt) {
+Enemy.prototype.move = function move(dt, playerPos) {
   if (this.vel[1] < 0) {
     this.jumping = true;
   } else if (this.pos[1] + this.vel[1] + 1 >= 465) {
@@ -42,7 +47,8 @@ Enemy.prototype.move = function move(dt) {
     this.pos[1] = 200 - this.radius;
     this.vel[1] = 0;
   }
-
+  this.moveTowardsPlayer(playerPos);
+  this.shouldJump(playerPos);
   const velocityScale = dt / NORMAL_FRAME_TIME_DELTA,
     dx = this.vel[0] * velocityScale,
     dy = this.vel[1] * velocityScale;
@@ -57,5 +63,26 @@ Enemy.prototype.move = function move(dt) {
   }
   this.vel[1] = (this.pos[1] === 450 ? 0 : this.vel[1] + this.grav)
 };
+
+Enemy.prototype.moveTowardsPlayer = function moveTowardsPlayer(playerPos) {
+if (this.pos[0] < playerPos[0]) {
+  this.vel[0] = this.runSpeed;
+} else if (this.pos[0] > playerPos[0]) {
+  this.vel[0] = -this.runSpeed;
+}
+};
+
+Enemy.prototype.shouldJump = function shouldJump(playerPos) {
+  if (this.jumpCooldown > 0) {
+    this.jumpCooldown -= 1;
+    return;
+  }
+  if (playerPos[1] < this.pos[1] && this.vel[1] === 0) {
+    this.vel[1] = this.jumpSpeed;
+    this.jumpCooldown = 30 + Math.floor(Math.random() * 100);
+  } else {
+    return;
+  }
+}
 
 module.exports = Enemy;
