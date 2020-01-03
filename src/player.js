@@ -10,12 +10,13 @@ function Player() {
   this.walkingRight = false;
   this.runSpeed = 3;
   this.dashSpeed = 6;
-  this.lastDirection = null;
+  this.lastDirection = "right";
   this.dead = false;
+  
 }
 
 Player.prototype.draw = function draw(ctx) {
-  ctx.fillStyle = "#00ff00"
+  ctx.fillStyle = "#ffffff"
   ctx.beginPath();
   ctx.arc(
     this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
