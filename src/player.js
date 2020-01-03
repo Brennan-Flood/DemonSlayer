@@ -151,9 +151,10 @@ Player.prototype.stopDash = function stopDash() {
 Player.prototype.getCurrentAnimation = function getCurrentAnimation() {
   if (this.atFloor || this.onPlatform) {
     if (this.currentAnimation === "ground" && this.currentAnimationFrame > 0) {
-      this.currentAnimationFrame -= 1
+      this.currentAnimationFrame -= (this.dashing ? 1.5 : 1)
+      
     } else {
-      this.currentAnimationFrame = 7;
+      this.currentAnimationFrame = 80;
     }
     this.currentAnimation = "ground";
     if (this.walkingLeft) {
@@ -167,7 +168,7 @@ Player.prototype.getCurrentAnimation = function getCurrentAnimation() {
     if (this.currentAnimation === "air" && this.currentAnimationFrame > 0) {
       this.currentAnimationFrame -= 1
     } else {
-      this.currentAnimationFrame = 7;
+      this.currentAnimationFrame = 80;
     }
     this.currentAnimation = "air";
   }

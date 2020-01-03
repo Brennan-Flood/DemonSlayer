@@ -43,8 +43,8 @@ Game.prototype.draw = function draw(ctx) {
     enemy.draw(ctx);
   });
   this.playerAttack.draw(ctx);
-
-  this.playerSprite.draw(ctx, this.player.currentWalkingDirection, this.player.currentAnimation, this.player.lastDirection, this.player.currentAnimationFrame, this.playerAttack.attacking, this.playerAttack.attackTimeLeft);
+  this.playerSprite.getCurrentAnimationInfo(this.player.currentWalkingDirection, this.player.currentAnimation, this.player.lastDirection, this.player.currentAnimationFrame, this.playerAttack.attacking, this.playerAttack.attackTimeLeft);
+  this.playerSprite.draw(ctx);
 };
 
 Game.prototype.upKey = function upKey() {
@@ -191,7 +191,7 @@ Game.prototype.killPlayer = function killPlayer() {
 };
 
 Game.prototype.addPlayerSprite = function addPlayerSprite(playerPos) {
-  const playerSprite = new PlayerSprite(playerPos);
+  const playerSprite = new PlayerSprite(this.players[0].pos);
   this.playerSprite = playerSprite;
 };
 
