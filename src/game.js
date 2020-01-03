@@ -15,6 +15,7 @@ function Game(ctx) {
   this.playerDirection = null;
   this.enemyTimeout = 50;
   this.player;
+  this.gameOver = false;
 }
 
 Game.WIDTH = 700;
@@ -23,7 +24,8 @@ Game.FPS = 32;
 
 Game.prototype.draw = function draw(ctx) {
   ctx.clearRect(0, 0, Game.WIDTH, Game.HEIGHT);
-  ctx.drawImage(this.background.image, 0, 0)
+  ctx.drawImage(this.background.image, 0, 0);
+  
   this.objects().forEach(object => {
     object.draw(ctx);
   });
@@ -32,9 +34,12 @@ Game.prototype.draw = function draw(ctx) {
       this.killEnemy(enemy.id);
     }
   });
+  this.enemies.forEach((enemy) => {
+    this.enemyHitPlayer(enemy);
+  });
   this.enemies.forEach(enemy => {
     enemy.draw(ctx);
-  })
+  });
   this.playerAttack.draw(ctx);
 };
 
@@ -140,7 +145,6 @@ Game.prototype.playerAttackCollision = function playerAttackCollision(enemy) {
   let testY;
   if (enemy.pos[0] <= this.playerAttack.pos[0]) {
     testX = this.playerAttack.width + this.playerAttack.pos[0];
-    console.log(testX);
   } else if (enemy.pos[0] >= this.playerAttack.width + this.playerAttack.pos[0]) {
     testX = this.playerAttack.width + this.playerAttack.pos[0];
     
@@ -154,7 +158,6 @@ Game.prototype.playerAttackCollision = function playerAttackCollision(enemy) {
   let dy = cy - testY;
   let distance = Math.sqrt((dx * dx) + (dy * dy));
   if (distance < enemy.radius) {
-    console.log(true, cx, testX, cy, testY );
     return true;
   }
   return false;
@@ -164,9 +167,22 @@ Game.prototype.killEnemy = function killEnemy(enemyId) {
   this.enemies.forEach((enemy, i) => {
   if (enemy.id === enemyId) {
       this.enemies[i].pos = [null];
-      console.log("enemy killed")
     } 
   })
+};
+
+Game.prototype.enemyHitPlayer = function enemyHitPlayer(enemy) {
+  let dx = enemy.pos[0] - this.playerPos[0];
+  let dy = enemy.pos[1] - this.playerPos[1];
+  let dist = Math.sqrt((dx * dx) + (dy * dy))
+  if (dist < enemy.radius + this.player.radius) {
+    this.killPlayer();
+  } 
+};
+
+Game.prototype.killPlayer = function killPlayer() {
+  this.players[0].dead = true;
+  this.gameOver = true;
 };
 
 module.exports = Game;

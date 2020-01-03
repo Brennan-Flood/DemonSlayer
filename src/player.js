@@ -11,6 +11,7 @@ function Player() {
   this.runSpeed = 3;
   this.dashSpeed = 6;
   this.lastDirection = null;
+  this.dead = false;
 }
 
 Player.prototype.draw = function draw(ctx) {
