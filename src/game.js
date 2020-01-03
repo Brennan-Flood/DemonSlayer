@@ -4,6 +4,7 @@ const Platform = require("./platform");
 const Attack = require("./attack");
 const Enemy = require("./enemy");
 const Util = require("./util");
+const PlayerSprite = require("./player_sprite");
 
 function Game(ctx) {
   this.background = new Background();
@@ -15,6 +16,7 @@ function Game(ctx) {
   this.playerDirection = null;
   this.enemyTimeout = 50;
   this.player;
+  this.playerSprite = null;
   this.gameOver = false;
 }
 
@@ -41,6 +43,8 @@ Game.prototype.draw = function draw(ctx) {
     enemy.draw(ctx);
   });
   this.playerAttack.draw(ctx);
+
+  this.playerSprite.draw(ctx, this.player.currentWalkingDirection, this.player.currentAnimation, this.player.lastDirection, this.player.currentAnimationFrame, this.playerAttack.attacking, this.playerAttack.attackTimeLeft);
 };
 
 Game.prototype.upKey = function upKey() {
@@ -120,6 +124,7 @@ Game.prototype.move = function move(dt) {
     enemy.move(dt, this.playerPos);
   })
   this.playerAttack.move(this.playerPos);
+  this.playerSprite.move(this.player.pos);
 };
 
 Game.prototype.startAttack = function startAttack() {
@@ -183,6 +188,11 @@ Game.prototype.enemyHitPlayer = function enemyHitPlayer(enemy) {
 Game.prototype.killPlayer = function killPlayer() {
   this.players[0].dead = true;
   this.gameOver = true;
+};
+
+Game.prototype.addPlayerSprite = function addPlayerSprite(playerPos) {
+  const playerSprite = new PlayerSprite(playerPos);
+  this.playerSprite = playerSprite;
 };
 
 module.exports = Game;

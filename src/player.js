@@ -10,9 +10,13 @@ function Player() {
   this.walkingRight = false;
   this.runSpeed = 3;
   this.dashSpeed = 6;
+  this.jumping = null;
   this.lastDirection = "right";
   this.dead = false;
-  
+  this.currentAnimation = null;
+  this.currentAnimationFrame = null;
+  this.currentWalkingDirection = null;
+  this.atFloor = false;
 }
 
 Player.prototype.draw = function draw(ctx) {
@@ -22,6 +26,7 @@ Player.prototype.draw = function draw(ctx) {
     this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
   );
   ctx.fill();
+  this.getCurrentAnimation();
 }
 
 const NORMAL_FRAME_TIME_DELTA = 1000 / 60;
@@ -29,13 +34,19 @@ const NORMAL_FRAME_TIME_DELTA = 1000 / 60;
 Player.prototype.move = function move(dt) {
   if (this.vel[1] < 0 ) {
     this.jumping = true;
+    this.atFloor = false;
   } else if (this.pos[1] + this.vel[1] + 1 >= 465) {
     this.vel[1] = 450 - this.pos[1];
     this.jumping = false;
+    this.atFloor = false;
   } else if (Util.atFloor(this)){
     this.vel[1] = 0; 
     this.jumping = false;
-  } 
+    this.atFloor = true;
+  } else {
+    this.atFloor = false;
+    this.jumping = true;
+  }
 
   let outOfBounds = Util.outOfBounds(this.pos[0], this.radius);
   if (outOfBounds) {
@@ -45,10 +56,14 @@ Player.prototype.move = function move(dt) {
   if (onPlatform === 1 || onPlatform === 3) {
     this.pos[1] = 350 - this.radius;
     this.vel[1] = 0;
+    this.onPlatform = true;
   } else if (onPlatform === 2) {
     this.pos[1] = 200 - this.radius;
     this.vel[1] = 0;
-  } 
+    this.onPlatform = true;
+  } else {
+    this.onPlatform = false;
+  }
 
   const velocityScale = dt / NORMAL_FRAME_TIME_DELTA,
     dx = this.vel[0] * velocityScale,
@@ -130,6 +145,31 @@ Player.prototype.stopDash = function stopDash() {
     this.vel[0] = -this.runSpeed;
   } else if (this.walkingRight && !this.walkingLeft) {
     this.vel[0] = this.runSpeed;
+  }
+};
+
+Player.prototype.getCurrentAnimation = function getCurrentAnimation() {
+  if (this.atFloor || this.onPlatform) {
+    if (this.currentAnimation === "ground" && this.currentAnimationFrame > 0) {
+      this.currentAnimationFrame -= 1
+    } else {
+      this.currentAnimationFrame = 7;
+    }
+    this.currentAnimation = "ground";
+    if (this.walkingLeft) {
+      this.currentWalkingDirection = "left";
+    } else if (this.walkingRight) {
+      this.currentWalkingDirection = "right";
+    } else {
+      this.currentWalkingDirection = null;
+    }
+  } else {
+    if (this.currentAnimation === "air" && this.currentAnimationFrame > 0) {
+      this.currentAnimationFrame -= 1
+    } else {
+      this.currentAnimationFrame = 7;
+    }
+    this.currentAnimation = "air";
   }
 };
 

@@ -9,6 +9,7 @@ Render.prototype.start = function start() {
   this.game.addPlatforms();
   this.game.addPlayerAttack();
   this.game.addEnemies();
+  this.game.addPlayerSprite();
   requestAnimationFrame(this.animate.bind(this));
 }
 
