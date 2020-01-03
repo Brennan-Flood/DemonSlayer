@@ -127,7 +127,11 @@ Game.prototype.getPlayerDirection = function getPlayerDirection() {
 };
 
 Game.prototype.playerAttackCollision = function playerAttackCollision(enemyPos) {
-  
+  if (enemyPos[0] < this.playerAttack.pos[0]) {
+
+  } else if (enemyPos[0] > this.playerAttack.width + this.playerAttack.pos[0]) {
+    
+  }
 };
 
 Game.prototype.killEnemy = function killEnemy(enemyId) {
