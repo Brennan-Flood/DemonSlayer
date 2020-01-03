@@ -14,6 +14,7 @@ function Game(ctx) {
   this.enemies = [];
   this.playerDirection = null;
   this.enemyTimeout = 50;
+  this.player;
 }
 
 Game.WIDTH = 700;
@@ -25,6 +26,11 @@ Game.prototype.draw = function draw(ctx) {
   ctx.drawImage(this.background.image, 0, 0)
   this.objects().forEach(object => {
     object.draw(ctx);
+  });
+  this.enemies.forEach((enemy) => {
+    if (this.playerAttackCollision(enemy) === true) {
+      this.killEnemy(enemy.id);
+    }
   });
   this.enemies.forEach(enemy => {
     enemy.draw(ctx);
@@ -66,6 +72,7 @@ Game.prototype.addPlayer = function addPlayer() {
   const player = new Player();
   this.players.push(player);
   this.playerPos = player.pos;
+  this.player = player;
 };
 
 Game.prototype.addPlatforms = function addPlatforms(){
@@ -126,19 +133,39 @@ Game.prototype.getPlayerDirection = function getPlayerDirection() {
   }
 };
 
-Game.prototype.playerAttackCollision = function playerAttackCollision(enemyPos) {
-  if (enemyPos[0] < this.playerAttack.pos[0]) {
-
-  } else if (enemyPos[0] > this.playerAttack.width + this.playerAttack.pos[0]) {
+Game.prototype.playerAttackCollision = function playerAttackCollision(enemy) {
+  let cx = enemy.pos[0];
+  let cy = enemy.pos[1];
+  let testX;
+  let testY;
+  if (enemy.pos[0] <= this.playerAttack.pos[0]) {
+    testX = this.playerAttack.width + this.playerAttack.pos[0];
+    console.log(testX);
+  } else if (enemy.pos[0] >= this.playerAttack.width + this.playerAttack.pos[0]) {
+    testX = this.playerAttack.width + this.playerAttack.pos[0];
     
   }
+  if (enemy.pos[1] <= this.playerAttack.pos[1]) {
+    testY = this.playerAttack.pos[1];
+  } else if (enemy.pos[1] >= this.playerAttack.height + this.playerAttack.pos[1]) {
+    testY = this.playerAttack.height + this.playerAttack.pos[1];
+  }
+  let dx = cx - testX;
+  let dy = cy - testY;
+  let distance = Math.sqrt((dx * dx) + (dy * dy));
+  if (distance < enemy.radius) {
+    console.log(true, cx, testX, cy, testY );
+    return true;
+  }
+  return false;
 };
 
 Game.prototype.killEnemy = function killEnemy(enemyId) {
   this.enemies.forEach((enemy, i) => {
-    if (enemy.id === enemyId) {
-      this.enemies = this.enemies.splice(i, 1);
-    }
+  if (enemy.id === enemyId) {
+      this.enemies[i].pos = [null];
+      console.log("enemy killed")
+    } 
   })
 };
 
