@@ -10,17 +10,33 @@ function PlayerSprite(pos) {
   this.spriteSheet1.src = "assets/tanjiro_base_spritesheet.png";
   this.spriteSheet1Reversed = new Image();
   this.spriteSheet1Reversed.src = "assets/tanjiro_base_spritesheet_reversed.png";
+  this.running = new Image();
+  this.running.src = "assets/tanjro_run.png";
 };
 
-PlayerSprite.prototype.draw = function draw(ctx, currentWalkingDirection, currentAnimation, direction, currentAnimationFrame, isAttacking, attackAnimationFrame ) {
+PlayerSprite.prototype.draw = function draw(ctx) {
+
+  ctx.drawImage(
+    this.currentSpriteSheet, 
+    this.currentSrcPos[0], 
+    this.currentSrcPos[1],
+    this.currentSrcDim[0],
+    this.currentSrcDim[1],
+    this.currentDestPos[0],
+    this.currentDestPos[1],
+    this.currentDestDim[0],
+    this.currentDestDim[1]);
 
 };  
 
-PlayerSprite.prototype.move = function move(dt) {
-
+PlayerSprite.prototype.move = function move(playerPos) {
+  const posX = playerPos[0];
+  const posY = playerPos[1];
+  this.pos[0] = posX;
+  this.pos[1] = posY;
 };
 
-PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInfo(currentSprite) {
+PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInfo(currentWalkingDirection, currentAnimation, direction, currentAnimationFrame, isAttacking, attackAnimationFrame) {
 
 };
 
