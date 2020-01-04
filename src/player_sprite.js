@@ -83,8 +83,6 @@ PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInf
       this.currentSrcDim = [45, 57];
       this.currentDestPos = this.pos;
       this.currentDestDim = [70, 100];
-      console.log(currentAnimationFrame);
-      console.log(this.runningDictionary[direction][Math.ceil(currentAnimationFrame / 10)])
     }
   } else {
 
