@@ -14,6 +14,29 @@ function PlayerSprite(pos) {
   this.running.src = "assets/tanjro_run.png";
   this.runningReversed = new Image();
   this.runningReversed.src = "assets/tanjiro_run_reversed.png";
+  this.runningDictionary = {
+    left: {
+      8: [0, 4],
+      7: [0, 4],
+      6: [0, 4],
+      5: [0, 4],
+      4: [0 , 4],
+      3: [0 , 4],
+      2: [0 , 4],
+      1: [0 , 4]
+    }, 
+    right: {
+      8: [0, 15],
+      7: [50, 15],
+      6: [105, 15],
+      5: [175, 15],
+      4: [235, 15],
+      3: [300, 15],
+      2: [365, 15],
+      1: [430, 15],
+      0: [430, 15],
+    }
+  }
 };
 
 PlayerSprite.prototype.draw = function draw(ctx) {
@@ -40,7 +63,7 @@ PlayerSprite.prototype.move = function move(playerPos) {
 
 PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInfo(currentWalkingDirection, currentAnimation, direction, currentAnimationFrame, isAttacking, attackAnimationFrame) {
   if (!isAttacking) {
-    if ( currentAnimation === "ground") {
+    if ( currentAnimation === "ground" && !currentWalkingDirection) {
       this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
       this.currentSrcPos = (direction === "right" ? [0, 5] : [543, 5]);
       this.currentSrcDim = [45, 57];
@@ -52,6 +75,14 @@ PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInf
         this.currentSrcDim = [45, 50];
         this.currentDestPos = this.pos;
         this.currentDestDim = [70, 100];
+    } else {
+      this.currentSpriteSheet = (direction === "right" ? this.running : this.runningReversed);
+      this.currentSrcPos = this.runningDictionary[direction][Math.ceil(currentAnimationFrame / 10)]
+      this.currentSrcDim = [45, 57];
+      this.currentDestPos = this.pos;
+      this.currentDestDim = [70, 100];
+      console.log(currentAnimationFrame);
+      console.log(this.runningDictionary[direction][Math.ceil(currentAnimationFrame / 10)])
     }
   } else {
 
