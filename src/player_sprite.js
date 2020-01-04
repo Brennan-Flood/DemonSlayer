@@ -24,8 +24,8 @@ PlayerSprite.prototype.draw = function draw(ctx) {
     this.currentSrcPos[1],
     this.currentSrcDim[0],
     this.currentSrcDim[1],
-    this.currentDestPos[0],
-    this.currentDestPos[1],
+    this.currentDestPos[0] -30,
+    this.currentDestPos[1] -64,
     this.currentDestDim[0],
     this.currentDestDim[1]);
 
@@ -42,16 +42,16 @@ PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInf
   if (!isAttacking) {
     if ( currentAnimation === "ground") {
       this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
-      this.currentSrcPos = (direction === "right" ? [5, 5] : [440, 5]);
-      this.currentSrcDim = [50, 60];
+      this.currentSrcPos = (direction === "right" ? [0, 5] : [543, 5]);
+      this.currentSrcDim = [45, 57];
       this.currentDestPos = this.pos;
-      this.currentDestDim = [50, 60];
+      this.currentDestDim = [70, 100];
     } else if (currentAnimation === "air") {
         this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed );
-        this.currentSrcPos = (direction === "right" ? [5,5] : [440, 5]);
-        this.currentSrcDim = [50, 60];
+        this.currentSrcPos = (direction === "right" ? [270,235] : [273, 235]);
+        this.currentSrcDim = [45, 50];
         this.currentDestPos = this.pos;
-        this.currentDestDim = [50, 60];
+        this.currentDestDim = [70, 100];
     }
   } else {
 
