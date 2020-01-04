@@ -44,10 +44,14 @@ PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInf
       this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
       this.currentSrcPos = (direction === "right" ? [5, 5] : [440, 5]);
       this.currentSrcDim = [50, 60];
-      this.cuurentDestPos = this.pos;
+      this.currentDestPos = this.pos;
       this.currentDestDim = [50, 60];
-    } else if (currentAnimationFrame === "air") {
+    } else if (currentAnimation === "air") {
         this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed );
+        this.currentSrcPos = (direction === "right" ? [5,5] : [440, 5]);
+        this.currentSrcDim = [50, 60];
+        this.currentDestPos = this.pos;
+        this.currentDestDim = [50, 60];
     }
   } else {
 
