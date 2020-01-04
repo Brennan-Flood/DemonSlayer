@@ -12,6 +12,8 @@ function PlayerSprite(pos) {
   this.spriteSheet1Reversed.src = "assets/tanjiro_base_spritesheet_reversed.png";
   this.running = new Image();
   this.running.src = "assets/tanjro_run.png";
+  this.runningReversed = new Image();
+  this.runningReversed.src = "assets/tanjiro_run_reversed.png";
 };
 
 PlayerSprite.prototype.draw = function draw(ctx) {
@@ -37,7 +39,19 @@ PlayerSprite.prototype.move = function move(playerPos) {
 };
 
 PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInfo(currentWalkingDirection, currentAnimation, direction, currentAnimationFrame, isAttacking, attackAnimationFrame) {
+  if (!isAttacking) {
+    if ( currentAnimation === "ground") {
+      this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
+      this.currentSrcPos = (direction === "right" ? [5, 5] : [440, 5]);
+      this.currentSrcDim = [50, 60];
+      this.cuurentDestPos = this.pos;
+      this.currentDestDim = [50, 60];
+    } else if (currentAnimationFrame === "air") {
+        this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed );
+    }
+  } else {
 
+  }
 };
 
 module.exports = PlayerSprite;
