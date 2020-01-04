@@ -5,20 +5,22 @@ function AttackSprite(pos) {
   this.srcPos = [0, 0];
   this.srcDim = [0, 0];
   this.destPos = [0, 0];
+  this.destDim = [0, 0];
 }
 
 AttackSprite.prototype.draw = function draw(ctx) {
   ctx.drawImage(
-    this.currentSpriteSheet,
-    this.SrcPos[0],
-    this.SrcPos[1],
-    this.SrcDim[0],
-    this.SrcDim[1],
-    this.DestPos[0],
-    this.DestPos[1],
-    this.DestDim[0],
-    this.DestDim[1]
+    this.spriteSheet,
+    this.srcPos[0],
+    this.srcPos[1],
+    this.srcDim[0],
+    this.srcDim[1],
+    this.destPos[0],
+    this.destPos[1],
+    this.destDim[0],
+    this.destDim[1]
     );
+    console.log("drawing attack sprite")
 
 };
 

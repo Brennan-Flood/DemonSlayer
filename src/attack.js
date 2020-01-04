@@ -1,3 +1,5 @@
+const AttackSprite = require("./attack_sprite");
+
 function Attack(pos) {
   this.attacking = false;
   this.attackTimeLeft = 0;
@@ -32,6 +34,9 @@ Attack.prototype.draw = function draw(ctx) {
   ctx.beginPath();
   ctx.rect(this.pos[0], this.pos[1], this.width, this.height);
   ctx.fill();
+  if (this.attacking) {
+    this.attackSprite.draw(ctx);
+  }
   if (this.attackTimeLeft > 0) {
     this.attackTimeLeft -= 1;
   } else {
@@ -50,8 +55,8 @@ Attack.prototype.move = function move(playerPos) {
 Attack.prototype.startAttack = function startAttack(playerDirection) {
   if (!this.attacking) {
     this.playerDirectionMultiplier = (playerDirection === "left" ? -1 : 1)
-    this.attacking = true;
     this.attackTimeLeft = 60;
+    this.attacking = true;
   }
 }
 
