@@ -20,12 +20,20 @@ function Player() {
 }
 
 Player.prototype.draw = function draw(ctx) {
-  ctx.fillStyle = "#ffffff"
-  ctx.beginPath();
-  ctx.arc(
-    this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
-  );
-  ctx.fill();
+  // ctx.fillStyle = "rgba(255, 255, 255, 0)";
+  // ctx.beginPath();
+  // ctx.arc(
+  //   this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
+  // );
+  // ctx.fill();
+  var radgrad = ctx.createRadialGradient(this.pos[0], this.pos[1], 0, this.pos[0], this.pos[1], 60);
+  radgrad.addColorStop(0, 'rgba(255,0,0,1)');
+  radgrad.addColorStop(0.8, 'rgba(228,225,225,.9)');
+  radgrad.addColorStop(1, 'rgba(228,0,0,0)');
+
+  // draw shape
+  ctx.fillStyle = radgrad;
+  ctx.fillRect(0, 0, this.pos[0] + 150, this.pos[1] + 150);
   this.getCurrentAnimation();
 }
 

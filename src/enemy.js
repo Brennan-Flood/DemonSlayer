@@ -16,7 +16,7 @@ function Enemy(pos, id) {
 }
 
 Enemy.prototype.draw = function draw(ctx) {
-  ctx.fillStyle = "#ff0000"
+  ctx.fillStyle = "rgba(255, 255, 255, 0)";
   ctx.beginPath();
   ctx.arc(
     this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
@@ -27,7 +27,7 @@ Enemy.prototype.draw = function draw(ctx) {
 
 const NORMAL_FRAME_TIME_DELTA = 1000 / 60;
 
-Enemy.prototype.move = function move(dt, playerPos) {
+Enemy.prototype.move = function move(dt, playerPos, playerIsDead) {
   if (this.vel[1] < 0) {
     this.jumping = true;
   } else if (this.pos[1] + this.vel[1] + 1 >= 465) {

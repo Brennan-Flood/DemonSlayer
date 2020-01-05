@@ -16,7 +16,7 @@ function PlayerSprite(pos) {
   this.runningReversed.src = "assets/tanjiro_run_reversed.png";
   this.runningDictionary = {
     left: {
-      8: [450, 15],
+      8: [455, 15],
       7: [405, 15],
       6: [345, 15],
       5: [280, 15],
@@ -97,9 +97,9 @@ PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInf
 
         this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
         if (attackAnimationFrame > 33 ) {
-          this.currentSrcPos = (direction === "right" ? [65, 130] : [469, 130])
+          this.currentSrcPos = (direction === "right" ? [63, 130] : [469, 130])
         } else {
-          this.currentSrcPos = (direction === "right" ? [106, 130] : [428, 130])
+          this.currentSrcPos = (direction === "right" ? [112, 130] : [428, 130])
         }
         this.currentSrcDim = [50, 55];
         this.currentDestPos = this.pos;

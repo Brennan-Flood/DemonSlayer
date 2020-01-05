@@ -33,11 +33,13 @@ Game.prototype.draw = function draw(ctx) {
   this.objects().forEach(object => {
     object.draw(ctx);
   });
+  if (this.player.attacking) {
   this.enemies.forEach((enemy) => {
     if (this.playerAttackCollision(enemy) === true) {
       this.killEnemy(enemy.id);
     }
   });
+  }
   this.enemies.forEach((enemy) => {
     this.enemyHitPlayer(enemy);
   });
@@ -136,7 +138,7 @@ Game.prototype.move = function move(dt) {
   });
   this.playerPos = this.players[0].pos;
   this.enemies.forEach(enemy => {
-    enemy.move(dt, this.playerPos);
+    enemy.move(dt, this.playerPos, this.player.dead);
   })
   this.playerAttack.move(this.playerPos);
   this.playerSprite.move(this.player.pos);
