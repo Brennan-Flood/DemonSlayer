@@ -12,6 +12,7 @@ function Enemy(pos, id) {
   this.jumpCooldown = 0;
   this.id = id;
   this.sprite = new EnemySprite(this.pos);
+  this.plusOrMinus = Math.random() < 0.5 ? -1 : 1;
 }
 
 Enemy.prototype.draw = function draw(ctx) {
@@ -45,12 +46,17 @@ Enemy.prototype.move = function move(dt, playerPos) {
   if (onPlatform === 1 || onPlatform === 3) {
     this.pos[1] = 350 - this.radius;
     this.vel[1] = 0;
+    this.onPlatform = true;
   } else if (onPlatform === 2) {
     this.pos[1] = 200 - this.radius;
     this.vel[1] = 0;
+    this.onPlatform = true;
+  } else {
+    this.onPlatform = false;
   }
   this.moveTowardsPlayer(playerPos);
   this.shouldJump(playerPos);
+
   const velocityScale = dt / NORMAL_FRAME_TIME_DELTA,
     dx = this.vel[0] * velocityScale,
     dy = this.vel[1] * velocityScale;
@@ -68,11 +74,17 @@ Enemy.prototype.move = function move(dt, playerPos) {
 };
 
 Enemy.prototype.moveTowardsPlayer = function moveTowardsPlayer(playerPos) {
-if (this.pos[0] < playerPos[0]) {
-  this.vel[0] = this.runSpeed;
-} else if (this.pos[0] > playerPos[0]) {
-  this.vel[0] = -this.runSpeed;
-}
+  if (this.onPlatform && (this.pos[1] < playerPos[1])) {
+    this.vel[0] = this.plusOrMinus;
+  } else if ((!this.onPlatform && this.vel[1] > 0) && (this.pos[1] < playerPos[1])){ 
+    this.vel[0] = this.plusOrMinus*3;
+  } else { 
+    if (this.pos[0] < playerPos[0]) {
+      this.vel[0] = this.runSpeed;
+    } else if (this.pos[0] > playerPos[0]) {
+      this.vel[0] = -this.runSpeed;
+    }
+  }
 };
 
 Enemy.prototype.shouldJump = function shouldJump(playerPos) {
