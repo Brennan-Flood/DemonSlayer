@@ -28,8 +28,6 @@ AttackSprite.prototype.draw = function draw(ctx) {
     this.destDim[0],
     this.destDim[1]
     );
-    console.log(this.srcPos, this.srcPos, this.destPos, this.destDim)
-    console.log("drawing attack sprite")
 
 };
 

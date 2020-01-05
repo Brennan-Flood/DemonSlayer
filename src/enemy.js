@@ -1,5 +1,5 @@
 const Util = require("./util");
-
+const EnemySprite = require("./enemy_sprite");
 function Enemy(pos, id) {
   this.pos = pos;
   this.vel = [0, 1];
@@ -7,10 +7,11 @@ function Enemy(pos, id) {
   this.radius = 30;
   this.jumping = false;
   this.playerPos = null
-  this.runSpeed = 2;
+  this.runSpeed = 1;
   this.jumpSpeed = -22;
   this.jumpCooldown = 0;
   this.id = id;
+  this.sprite = new EnemySprite(this.pos);
 }
 
 Enemy.prototype.draw = function draw(ctx) {
@@ -20,6 +21,7 @@ Enemy.prototype.draw = function draw(ctx) {
     this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
   );
   ctx.fill();
+  this.sprite.draw(ctx, this.vel)
 };
 
 const NORMAL_FRAME_TIME_DELTA = 1000 / 60;
@@ -58,6 +60,7 @@ Enemy.prototype.move = function move(dt, playerPos) {
   newPosY = (newPosY > 450 ? 450 : newPosY)
   this.pos[0] = newPosX;
   this.pos[1] = newPosY;
+  this.sprite.move(this.pos);
   if (onPlatform !== false) {
     return;
   }
@@ -79,7 +82,7 @@ Enemy.prototype.shouldJump = function shouldJump(playerPos) {
   }
   if (playerPos[1] < this.pos[1] && this.vel[1] === 0) {
     this.vel[1] = this.jumpSpeed;
-    this.jumpCooldown = 30 + Math.floor(Math.random() * 100);
+    this.jumpCooldown = 100 + Math.floor(Math.random() * 120);
   } else {
     return;
   }

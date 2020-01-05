@@ -27,6 +27,7 @@ Player.prototype.draw = function draw(ctx) {
   );
   ctx.fill();
   this.getCurrentAnimation();
+  console.log(this.dead);
 }
 
 const NORMAL_FRAME_TIME_DELTA = 1000 / 60;
