@@ -38,7 +38,7 @@ function PlayerSprite(pos) {
       1: [430, 15],
       0: [430, 15],
     }
-  }
+  };
 };
 
 PlayerSprite.prototype.draw = function draw(ctx) {
@@ -85,7 +85,16 @@ PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInf
       this.currentDestDim = [70, 100];
     }
   } else {
-
+    
+      this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
+      if (attackAnimationFrame > 33 ) {
+        this.currentSrcPos = (direction === "right" ? [65, 130] : [469, 130])
+      } else {
+        this.currentSrcPos = (direction === "right" ? [106, 130] : [428, 130])
+      }
+      this.currentSrcDim = [50, 55];
+      this.currentDestPos = this.pos;
+      this.currentDestDim = [80, 100]
   }
 };
 
