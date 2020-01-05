@@ -33,7 +33,7 @@ Game.prototype.draw = function draw(ctx) {
   this.objects().forEach(object => {
     object.draw(ctx);
   });
-  if (this.player.attacking) {
+  if (this.playerAttack.attacking && !this.player.dead) {
   this.enemies.forEach((enemy) => {
     if (this.playerAttackCollision(enemy) === true) {
       this.killEnemy(enemy.id);
@@ -180,6 +180,11 @@ Game.prototype.playerAttackCollision = function playerAttackCollision(enemy) {
   let dy = cy - testY;
   let distance = Math.sqrt((dx * dx) + (dy * dy));
   if (distance < enemy.radius) {
+    return true;
+  } else if ( 
+    this.playerAttack.pos[0] < enemy.pos[0] && this.playerAttack.width + this.playerAttack.pos[0] > enemy.pos[0]
+    && this.playerAttack.pos[1] < enemy.pos[1] && this.playerAttack.width + this.playerAttack.pos[1] > enemy.pos[1]
+    ) {
     return true;
   }
   return false;

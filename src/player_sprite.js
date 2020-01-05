@@ -14,6 +14,10 @@ function PlayerSprite(pos) {
   this.running.src = "assets/tanjro_run.png";
   this.runningReversed = new Image();
   this.runningReversed.src = "assets/tanjiro_run_reversed.png";
+  this.attackAndNeutral = new Image();
+  this.attackAndNeutral.src = "assets/tanjiro_attack_and_nuetral.png";
+  this.attackAndNeutralReversed = new Image();
+  this.attackAndNeutralReversed.src = "assets/tanjiro_attack_and_nuetral_reversed.png";
   this.runningDictionary = {
     left: {
       8: [455, 15],
@@ -75,14 +79,14 @@ PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInf
     this.dead = false;
     if (!isAttacking) {
       if ( currentAnimation === "ground" && !currentWalkingDirection) {
-        this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
-        this.currentSrcPos = (direction === "right" ? [0, 5] : [543, 5]);
-        this.currentSrcDim = [45, 57];
+        this.currentSpriteSheet = (direction === "right" ? this.attackAndNeutral : this.attackAndNeutralReversed);
+        this.currentSrcPos = (direction === "right" ? [260, 0] : [40, 0]);
+        this.currentSrcDim = [130, 270];
         this.currentDestPos = this.pos;
-        this.currentDestDim = [70, 100];
+        this.currentDestDim = [50, 95];
       } else if (currentAnimation === "air") {
           this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed );
-          this.currentSrcPos = (direction === "right" ? [270,235] : [273, 235]);
+          this.currentSrcPos = (direction === "right" ? [270, 235] : [273, 235]);
           this.currentSrcDim = [45, 50];
           this.currentDestPos = this.pos;
           this.currentDestDim = [70, 100];
@@ -97,7 +101,7 @@ PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInf
 
         this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
         if (attackAnimationFrame > 33 ) {
-          this.currentSrcPos = (direction === "right" ? [63, 130] : [469, 130])
+          this.currentSrcPos = (direction === "right" ? [66, 130] : [472, 130])
         } else {
           this.currentSrcPos = (direction === "right" ? [112, 130] : [428, 130])
         }

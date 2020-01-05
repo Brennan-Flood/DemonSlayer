@@ -37,6 +37,9 @@ Enemy.prototype.move = function move(dt, playerPos, playerIsDead) {
     this.vel[1] = 0;
     this.jumping = false;
   }
+  if (playerIsDead) {
+    this.playerIsDead = true;
+  };
 
   let outOfBounds = Util.outOfBounds(this.pos[0], this.radius);
   if (outOfBounds) {
@@ -77,7 +80,9 @@ Enemy.prototype.moveTowardsPlayer = function moveTowardsPlayer(playerPos) {
   if (this.onPlatform && (this.pos[1] < playerPos[1])) {
     this.vel[0] = this.plusOrMinus;
   } else if ((!this.onPlatform && this.vel[1] > 0) && (this.pos[1] < playerPos[1])){ 
-    this.vel[0] = this.plusOrMinus*3;
+    this.vel[0] = this.plusOrMinus*4;
+  } else if ( this.playerIsDead ) {
+    this.vel[0] = this.plusOrMinus;
   } else { 
     if (this.pos[0] < playerPos[0]) {
       this.vel[0] = this.runSpeed;
