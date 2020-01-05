@@ -11,20 +11,38 @@ function Attack(pos) {
 };
 
 Attack.prototype.draw = function draw(ctx) {
-  if (this.attackTimeLeft > 30) {
+  if (this.attackTimeLeft > 33) {
     this.width = 30*this.playerDirectionMultiplier;
     this.height = -35;
     this.attackSprite.srcPos = [0,0];
     this.attackSprite.srcDim = [0, 0];
-    this.attackSprite.destPos = [0, 0];
-  } else if (this.attackTimeLeft > 20) {
-    this.width = 50*this.playerDirectionMultiplier;
+    this.attackSprite.destDim = (this.playerDirectionMultiplier > 0 ? [0, 0] : [0, 0]);
+    if (this.playerDirectionMultiplier < 0) {
+      this.attackSprite.direction = "left"
+    } else {
+      this.attackSprite.direction = "right"
+    }
+  } else if (this.attackTimeLeft > 25) {
+    this.width = 140*this.playerDirectionMultiplier;
     this.height = -70;
-    this.attackSprite.srcPos = [0 ,0];
+    
+    this.attackSprite.srcPos = [170, 120];
+    this.attackSprite.srcDim = [90, 80];
+    this.attackSprite.destDim = ( this.playerDirectionMultiplier > 0 ? [120, 100] : [-120, 100]);
+    
+  } else if ( this.attackTimeLeft > 18) {
+    this.width = 140 * this.playerDirectionMultiplier;
+    this.height = -70;
+    this.attackSprite.srcPos = [260, 120];
+    this.attackSprite.srcDim = [90, 80];
+    this.attackSprite.destDim = (this.playerDirectionMultiplier > 0 ? [120, 100] : [-120, 100]);
 
   } else if (this.attackTimeLeft > 10) {
     this.width = 140*this.playerDirectionMultiplier;
     this.height = -70;
+    this.attackSprite.srcPos = [365, 120];
+    this.attackSprite.srcDim = [90, 80];
+    this.attackSprite.destDim = (this.playerDirectionMultiplier > 0 ? [120, 100] : [-120, 100]);
   } else {
     this.width = 0*this.playerDirectionMultiplier;
     this.height = 0;
