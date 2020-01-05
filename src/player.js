@@ -27,12 +27,12 @@ Player.prototype.draw = function draw(ctx) {
   );
   ctx.fill();
   this.getCurrentAnimation();
-  console.log(this.dead);
 }
 
 const NORMAL_FRAME_TIME_DELTA = 1000 / 60;
 
 Player.prototype.move = function move(dt) {
+  
   if (this.vel[1] < 0 ) {
     this.jumping = true;
     this.atFloor = false;
@@ -65,7 +65,9 @@ Player.prototype.move = function move(dt) {
   } else {
     this.onPlatform = false;
   }
-
+  if (this.dead) {
+  this.vel[0] = 0;
+  }
   const velocityScale = dt / NORMAL_FRAME_TIME_DELTA,
     dx = this.vel[0] * velocityScale,
     dy = this.vel[1] * velocityScale;
@@ -82,13 +84,15 @@ Player.prototype.move = function move(dt) {
 };
 
 Player.prototype.jump = function jump() {
-  if (this.vel[1] === 0 && ( Util.onPlatform(this.pos, this.radius, this.vel) !== false || Util.atFloor(this) !== false) ) {
-  this.vel[1] = -16;
-  this.jumpFramesLeft = 6;
-  this.jumpsLeft = 1;
-  } else if (this.jumpsLeft === 1) {
-    this.vel[1] = -12;
-    this.jumpsLeft = 0;
+  if ( !this.dead ) {
+    if (this.vel[1] === 0 && ( Util.onPlatform(this.pos, this.radius, this.vel) !== false || Util.atFloor(this) !== false) ) {
+    this.vel[1] = -16;
+    this.jumpFramesLeft = 6;
+    this.jumpsLeft = 1;
+    } else if (this.jumpsLeft === 1) {
+      this.vel[1] = -12;
+      this.jumpsLeft = 0;
+    }
   }
 };
 

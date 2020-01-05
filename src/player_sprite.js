@@ -37,22 +37,29 @@ function PlayerSprite(pos) {
       2: [370, 15],
       1: [430, 15],
       0: [430, 15],
-    }
+    },
   };
+  this.dead = false;
 };
 
 PlayerSprite.prototype.draw = function draw(ctx) {
-
+  let offset;
+  if (!this.dead) {
+    offset = [-30, -64];
+  } else {
+    offset = [-50,0];
+  }
   ctx.drawImage(
     this.currentSpriteSheet, 
     this.currentSrcPos[0], 
     this.currentSrcPos[1],
     this.currentSrcDim[0],
     this.currentSrcDim[1],
-    this.currentDestPos[0] -30,
-    this.currentDestPos[1] -64,
+    this.currentDestPos[0] + offset[0],
+    this.currentDestPos[1] + offset[1],
     this.currentDestDim[0],
-    this.currentDestDim[1]);
+    this.currentDestDim[1]
+    );
 
 };  
 
@@ -63,38 +70,48 @@ PlayerSprite.prototype.move = function move(playerPos) {
   this.pos[1] = posY;
 };
 
-PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInfo(currentWalkingDirection, currentAnimation, direction, currentAnimationFrame, isAttacking, attackAnimationFrame) {
-  if (!isAttacking) {
-    if ( currentAnimation === "ground" && !currentWalkingDirection) {
-      this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
-      this.currentSrcPos = (direction === "right" ? [0, 5] : [543, 5]);
-      this.currentSrcDim = [45, 57];
-      this.currentDestPos = this.pos;
-      this.currentDestDim = [70, 100];
-    } else if (currentAnimation === "air") {
-        this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed );
-        this.currentSrcPos = (direction === "right" ? [270,235] : [273, 235]);
-        this.currentSrcDim = [45, 50];
+PlayerSprite.prototype.getCurrentAnimationInfo = function getCurrentAnimationInfo(currentWalkingDirection, currentAnimation, direction, currentAnimationFrame, isAttacking, attackAnimationFrame, dead) {
+  if (!dead) {
+    this.dead = false;
+    if (!isAttacking) {
+      if ( currentAnimation === "ground" && !currentWalkingDirection) {
+        this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
+        this.currentSrcPos = (direction === "right" ? [0, 5] : [543, 5]);
+        this.currentSrcDim = [45, 57];
         this.currentDestPos = this.pos;
         this.currentDestDim = [70, 100];
+      } else if (currentAnimation === "air") {
+          this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed );
+          this.currentSrcPos = (direction === "right" ? [270,235] : [273, 235]);
+          this.currentSrcDim = [45, 50];
+          this.currentDestPos = this.pos;
+          this.currentDestDim = [70, 100];
+      } else {
+        this.currentSpriteSheet = (direction === "right" ? this.running : this.runningReversed);
+        this.currentSrcPos = this.runningDictionary[direction][Math.ceil(currentAnimationFrame / 10)]
+        this.currentSrcDim = [45, 57];
+        this.currentDestPos = this.pos;
+        this.currentDestDim = [70, 100];
+      }
     } else {
-      this.currentSpriteSheet = (direction === "right" ? this.running : this.runningReversed);
-      this.currentSrcPos = this.runningDictionary[direction][Math.ceil(currentAnimationFrame / 10)]
-      this.currentSrcDim = [45, 57];
-      this.currentDestPos = this.pos;
-      this.currentDestDim = [70, 100];
+
+        this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
+        if (attackAnimationFrame > 33 ) {
+          this.currentSrcPos = (direction === "right" ? [65, 130] : [469, 130])
+        } else {
+          this.currentSrcPos = (direction === "right" ? [106, 130] : [428, 130])
+        }
+        this.currentSrcDim = [50, 55];
+        this.currentDestPos = this.pos;
+        this.currentDestDim = [80, 100]
     }
   } else {
-    
-      this.currentSpriteSheet = (direction === "right" ? this.spriteSheet1 : this.spriteSheet1Reversed);
-      if (attackAnimationFrame > 33 ) {
-        this.currentSrcPos = (direction === "right" ? [65, 130] : [469, 130])
-      } else {
-        this.currentSrcPos = (direction === "right" ? [106, 130] : [428, 130])
-      }
-      this.currentSrcDim = [50, 55];
-      this.currentDestPos = this.pos;
-      this.currentDestDim = [80, 100]
+    this.currentSpriteSheet = this.spriteSheet1;
+    this.currentSrcPos = [125, 87];
+    this.currentSrcDim = [60, 25];
+    this.currentDestPos = this.pos;
+    this.currentDestDim = [85, 40];
+    this.dead = true;
   }
 };
 

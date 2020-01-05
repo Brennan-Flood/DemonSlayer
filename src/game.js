@@ -5,6 +5,7 @@ const Attack = require("./attack");
 const Enemy = require("./enemy");
 const Util = require("./util");
 const PlayerSprite = require("./player_sprite");
+const GameOver = require("./game_over");
 
 function Game(ctx) {
   this.background = new Background();
@@ -18,6 +19,7 @@ function Game(ctx) {
   this.player;
   this.playerSprite = null;
   this.gameOver = false;
+  this.gameOverObject = new GameOver();
 }
 
 Game.WIDTH = 700;
@@ -42,9 +44,22 @@ Game.prototype.draw = function draw(ctx) {
   this.enemies.forEach(enemy => {
     enemy.draw(ctx);
   });
-  this.playerAttack.draw(ctx);
-  this.playerSprite.getCurrentAnimationInfo(this.player.currentWalkingDirection, this.player.currentAnimation, this.player.lastDirection, this.player.currentAnimationFrame, this.playerAttack.attacking, this.playerAttack.attackTimeLeft);
+  this.playerSprite.getCurrentAnimationInfo(
+    this.player.currentWalkingDirection, 
+    this.player.currentAnimation, 
+    this.player.lastDirection, 
+    this.player.currentAnimationFrame, 
+    this.playerAttack.attacking, 
+    this.playerAttack.attackTimeLeft, 
+    this.player.dead
+  );
   this.playerSprite.draw(ctx);
+  if (this.player.dead) {
+    this.gameOver = true;
+    this.gameOverObject.draw(ctx);
+    return;
+  };
+  this.playerAttack.draw(ctx);
 };
 
 Game.prototype.upKey = function upKey() {
