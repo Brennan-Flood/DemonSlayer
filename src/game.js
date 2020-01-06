@@ -162,14 +162,12 @@ Game.prototype.addPlayerAttack = function addPlayerAttack() {
 
 Game.prototype.addEnemies = function addEnemies() {
   let pos1 = [75, 300];
-  let pos2 = [350, 100];
   let pos3 = [625, 300];
 
   let enemy1 = new Enemy(pos1, 1);
-  let enemy2 = new Enemy(pos2, 2);
   let enemy3 = new Enemy(pos3, 3);
+
   this.enemies.push(enemy1);
-  this.enemies.push(enemy2);
   this.enemies.push(enemy3);
 };
 
@@ -191,6 +189,7 @@ Game.prototype.move = function move(dt) {
   this.playerPos = this.players[0].pos;
   this.enemies.forEach(enemy => {
     enemy.move(dt, this.playerPos, this.player.dead);
+    enemy.getFaster(this.score.score);
   })
   this.playerAttack.move(this.playerPos);
   this.playerSprite.move(this.player.pos);
@@ -235,10 +234,15 @@ Game.prototype.playerAttackCollision = function playerAttackCollision(enemy) {
   if (distance < enemy.radius) {
     return true;
   } else if ( 
-    this.playerAttack.pos[0] < enemy.pos[0] && this.playerAttack.width + this.playerAttack.pos[0] > enemy.pos[0]
-    && this.playerAttack.pos[1] < enemy.pos[1] && this.playerAttack.width + this.playerAttack.pos[1] > enemy.pos[1]
+    this.playerAttack.pos[0] <= enemy.pos[0] && this.playerAttack.width + this.playerAttack.pos[0] >= enemy.pos[0]
+    && this.playerAttack.pos[1] >= enemy.pos[1] && this.playerAttack.height + this.playerAttack.pos[1] <= enemy.pos[1]
     ) {
     return true;
+  } else if (
+    this.playerAttack.pos[0] >= enemy.pos[0] && this.playerAttack.width + this.playerAttack.pos[0] <= enemy.pos[0]
+    && this.playerAttack.pos[1] >= enemy.pos[1] && this.playerAttack.height + this.playerAttack.pos[1] <= enemy.pos[1]
+  ) {
+    return true
   }
   return false;
 };
@@ -277,6 +281,8 @@ Game.prototype.addPlayerSprite = function addPlayerSprite(playerPos) {
 
 Game.prototype.spawnEnemy = function spawnEnemy() {
   if (!this.starting && !this.gameOver) {
+    console.log(this.enemySpawnCooldown)
+
     if (this.enemies.length < this.maxEnemies && this.enemySpawnCooldown === 0) {
       this.enemySpawnCooldown = 200 - 2*this.enemies.length;
       this.maxEnemies = 3 + Math.floor(this.enemies.length / 10);
@@ -285,6 +291,8 @@ Game.prototype.spawnEnemy = function spawnEnemy() {
       const enemy = new Enemy(newEnemyPos, this.currentEnemyIndex);
       this.enemies.push(enemy);
       console.log("spawned enemy", enemy, this.enemies)
+    } else if (this.enemySpawnCooldown === 0) {
+      return;
     } else {
       this.enemySpawnCooldown -= 1;
     }
@@ -300,7 +308,7 @@ Game.prototype.getNewEnemyPos = function getNewEnemyPos() {
   } else if (randVal <= 8) {
     return [730, 450]
   } else {
-    return [450, 0]
+    return [0, 0]
   }
 };
 

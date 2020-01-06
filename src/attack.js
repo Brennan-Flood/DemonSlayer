@@ -27,7 +27,7 @@ Attack.prototype.draw = function draw(ctx) {
     }
   } else if (this.attackTimeLeft > 25) {
     this.width = 140*this.playerDirectionMultiplier;
-    this.height = -70;
+    this.height = -100;
     
     this.attackSprite.srcPos = (this.playerDirectionMultiplier > 0 ? [170, 120] : [318, 120]) ;
     this.attackSprite.srcDim = [90, 80];
@@ -35,14 +35,14 @@ Attack.prototype.draw = function draw(ctx) {
     
   } else if ( this.attackTimeLeft > 18) {
     this.width = 140 * this.playerDirectionMultiplier;
-    this.height = -70;
+    this.height = -100;
     this.attackSprite.srcPos = (this.playerDirectionMultiplier > 0 ? [260, 120] : [230, 120]);
     this.attackSprite.srcDim = [90, 80];
     this.attackSprite.destDim = (this.playerDirectionMultiplier > 0 ? [140, 100] : [-120, 100]);
 
   } else if (this.attackTimeLeft > 10) {
     this.width = 140*this.playerDirectionMultiplier;
-    this.height = -70;
+    this.height = -100;
     this.attackSprite.srcPos = (this.playerDirectionMultiplier > 0 ? [365, 120] : [125, 120]);
     this.attackSprite.srcDim = [90, 80];
     this.attackSprite.destDim = (this.playerDirectionMultiplier > 0 ? [140, 100] : [-120, 100]);
@@ -52,7 +52,7 @@ Attack.prototype.draw = function draw(ctx) {
   }
   ctx.fillStyle = "rgba(255, 255, 255, 0)";
   ctx.beginPath();
-  ctx.rect(this.pos[0], this.pos[1], this.width, this.height);
+  ctx.rect(this.pos[0], 40 + this.pos[1], this.width, this.height);
   ctx.fill();
   if (this.attacking) {
     this.attackSprite.draw(ctx, this.a);

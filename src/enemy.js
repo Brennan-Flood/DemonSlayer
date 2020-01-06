@@ -13,6 +13,7 @@ function Enemy(pos, id) {
   this.id = id;
   this.sprite = new EnemySprite(this.pos);
   this.plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+  this.onPlatformCooldown = 0;
 }
 
 Enemy.prototype.draw = function draw(ctx) {
@@ -50,10 +51,12 @@ Enemy.prototype.move = function move(dt, playerPos, playerIsDead) {
     this.pos[1] = 350 - this.radius;
     this.vel[1] = 0;
     this.onPlatform = true;
+    this.currentPlatform = onPlatform;
   } else if (onPlatform === 2) {
     this.pos[1] = 200 - this.radius;
     this.vel[1] = 0;
     this.onPlatform = true;
+    this.currentPlatform = onPlatform;
   } else {
     this.onPlatform = false;
   }
@@ -77,17 +80,19 @@ Enemy.prototype.move = function move(dt, playerPos, playerIsDead) {
 };
 
 Enemy.prototype.moveTowardsPlayer = function moveTowardsPlayer(playerPos) {
-  if (this.onPlatform && (this.pos[1] < playerPos[1])) {
-    this.vel[0] = this.plusOrMinus;
-  } else if ((!this.onPlatform && this.vel[1] > 0) && (this.pos[1] < playerPos[1])){ 
-    this.vel[0] = this.plusOrMinus*4;
+  this.playerPos = playerPos;
+  if ((this.onPlatform && (playerPos[1] > this.pos[1] && this.playerUnderneathPlatform()))) {
+    this.vel[0] = this.plusOrMinus * this.runSpeed;
+    this.onPlatformCooldown = 5;
   } else if ( this.playerIsDead ) {
-    this.vel[0] = this.plusOrMinus;
+    this.vel[0] = this.plusOrMinus * this.runSpeed;
   } else { 
-    if (this.pos[0] < playerPos[0]) {
+    if (this.pos[0] < playerPos[0] && this.onPlatformCooldown === 0) {
       this.vel[0] = this.runSpeed;
-    } else if (this.pos[0] > playerPos[0]) {
+    } else if (this.pos[0] > playerPos[0] && this.onPlatformCooldown === 0) {
       this.vel[0] = -this.runSpeed;
+    } else {
+      this.onPlatformCooldown -= 1;
     }
   }
 };
@@ -104,5 +109,21 @@ Enemy.prototype.shouldJump = function shouldJump(playerPos) {
     return;
   }
 }
+
+Enemy.prototype.playerUnderneathPlatform = function playerUnderneathPlatform() {
+  if (this.currentPlatform === 1 && (this.playerPos[0] <= 225 && this.playerPos[0] >= 25)) {
+    return true;
+  } else if (this.currentPlatform === 2 && (this.playerPos[0] <= 450 && this.playerPos[0] >= 250)) {
+    return true;
+  } else if (this.currentPlatform === 3 && (this.playerPos[0] <= 675 && this.playerPos[0] >= 475)) {
+    return true
+  } else {
+    return false;
+  }
+};
+
+Enemy.prototype.getFaster = function getFaster(demonsSlain) {
+  this.runSpeed = 1 + demonsSlain / 20;
+};
 
 module.exports = Enemy;
