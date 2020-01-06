@@ -1,15 +1,12 @@
 function Render(game, ctx) {
   this.ctx = ctx;
   this.game = game;
+  this.playing = false;
 }
 
 Render.prototype.start = function start() {
   this.lastTime = 0;
-  this.game.addPlayer();
-  this.game.addPlatforms();
-  this.game.addPlayerAttack();
-  this.game.addEnemies();
-  this.game.addPlayerSprite();
+  this.addStartMenu();
   requestAnimationFrame(this.animate.bind(this));
 }
 
@@ -18,9 +15,14 @@ Render.prototype.animate = function animate(time) {
 
   this.game.move(dt);
   this.game.draw(this.ctx);
+  this.game.spawnEnemy();
   this.lastTime = time;
 
   requestAnimationFrame(this.animate.bind(this));
+};
+
+Render.prototype.addStartMenu = function addStartMenu() {
+  this.game.addStartMenu();
 };
 
 module.exports = Render;

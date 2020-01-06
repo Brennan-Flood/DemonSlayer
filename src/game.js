@@ -6,7 +6,8 @@ const Enemy = require("./enemy");
 const Util = require("./util");
 const PlayerSprite = require("./player_sprite");
 const GameOver = require("./game_over");
-
+const StartMenu = require("./start_menu");
+const Score = require("./score");
 function Game(ctx) {
   this.background = new Background();
   this.players = [];
@@ -18,6 +19,12 @@ function Game(ctx) {
   this.enemyTimeout = 50;
   this.player;
   this.playerSprite = null;
+  this.maxEnemies = 3;
+  this.enemySpawnCooldown = 200;
+  this.currentEnemyIndex = 3;
+  this.score = null;
+  this.startMenu = null;
+  this.starting = true;
   this.gameOver = false;
   this.gameOverObject = new GameOver();
 }
@@ -26,23 +33,46 @@ Game.WIDTH = 700;
 Game.HEIGHT = 480;
 Game.FPS = 32;
 
+Game.prototype.addStartMenu = function addStartMenu() {
+  this.startMenu = new StartMenu();
+};
+
+Game.prototype.restart = function restart() {
+  this.starting = false;
+  this.players = [];
+  this.platforms = [];
+  this.enemies = [];
+  this.player = null;
+  this.playerAttack = null;
+  this.gameOver = false;
+  this.score = null;
+  this.addPlayer();
+  this.addPlatforms();
+  this.addPlayerAttack();
+  this.addEnemies();
+  this.addScore();
+};
+
 Game.prototype.draw = function draw(ctx) {
   ctx.clearRect(0, 0, Game.WIDTH, Game.HEIGHT);
   ctx.drawImage(this.background.image, 0, 0);
-  
+  if (this.starting) {
+    this.startMenu.draw(ctx);
+  } else {
   this.objects().forEach(object => {
     object.draw(ctx);
   });
+  
+  this.enemies.forEach((enemy) => {
+      this.enemyHitPlayer(enemy);
+  });
   if (this.playerAttack.attacking && !this.player.dead) {
-  this.enemies.forEach((enemy) => {
-    if (this.playerAttackCollision(enemy) === true) {
-      this.killEnemy(enemy.id);
-    }
-  });
+    this.enemies.forEach((enemy) => {
+      if (this.playerAttackCollision(enemy) === true) {
+        this.killEnemy(enemy.id);
+      }
+    });
   }
-  this.enemies.forEach((enemy) => {
-    this.enemyHitPlayer(enemy);
-  });
   this.enemies.forEach(enemy => {
     enemy.draw(ctx);
   });
@@ -56,42 +86,56 @@ Game.prototype.draw = function draw(ctx) {
     this.player.dead
   );
   this.playerSprite.draw(ctx);
+  this.score.draw(ctx);
   if (this.player.dead) {
     this.gameOver = true;
     this.gameOverObject.draw(ctx);
     return;
   };
   this.playerAttack.draw(ctx);
+  }
 };
 
 Game.prototype.upKey = function upKey() {
+  if (!this.starting) {
   let player = this.players[0];
   player.jump();
+  }
 };
 
 Game.prototype.leftKey = function leftKey() {
+  if (!this.starting) {
   let player = this.players[0];
   player.walk("left");
+  }
 };
 
 Game.prototype.rightKey = function rightkey() {
+  if (!this.starting) {
   let player = this.players[0];
   player.walk("right");
+  }
 };
 
 Game.prototype.shiftKey = function shiftKey() {
+  if (!this.starting) {
   let player = this.players[0];
   player.dash();
+  }
 };
 
 Game.prototype.stopDash = function stopDash() {
+  if (!this.starting) {
   let player = this.players[0];
   player.stopDash();
+  }
 };
 
 Game.prototype.stopWalking = function stopWalking(dir) {
+  if (!this.starting) {
   let player = this.players[0];
   player.stopWalking(dir);
+  }
 };
 
 Game.prototype.addPlayer = function addPlayer() {
@@ -99,6 +143,7 @@ Game.prototype.addPlayer = function addPlayer() {
   this.players.push(player);
   this.playerPos = player.pos;
   this.player = player;
+  this.addPlayerSprite(this.playerPos);
 };
 
 Game.prototype.addPlatforms = function addPlatforms(){
@@ -128,11 +173,18 @@ Game.prototype.addEnemies = function addEnemies() {
   this.enemies.push(enemy3);
 };
 
+Game.prototype.addScore = function addScore() {
+  this.score = new Score();
+};  
+
 Game.prototype.objects = function objects() {
   return [].concat(this.platforms).concat(this.players);
 };
 
 Game.prototype.move = function move(dt) {
+  if (this.starting) {
+    this.startMenu.move();
+  } else {
   this.objects().forEach(object => {
     object.move(dt);
   });
@@ -142,6 +194,7 @@ Game.prototype.move = function move(dt) {
   })
   this.playerAttack.move(this.playerPos);
   this.playerSprite.move(this.player.pos);
+  }
 };
 
 Game.prototype.startAttack = function startAttack() {
@@ -191,11 +244,16 @@ Game.prototype.playerAttackCollision = function playerAttackCollision(enemy) {
 };
 
 Game.prototype.killEnemy = function killEnemy(enemyId) {
+  
+  const newEnemiesArr = [];
   this.enemies.forEach((enemy, i) => {
   if (enemy.id === enemyId) {
-      this.enemies[i].pos = [null];
-    } 
+      this.score.addToScore();
+    } else {
+      newEnemiesArr.push(enemy);
+    }
   })
+  this.enemies = newEnemiesArr;
 };
 
 Game.prototype.enemyHitPlayer = function enemyHitPlayer(enemy) {
@@ -215,6 +273,35 @@ Game.prototype.killPlayer = function killPlayer() {
 Game.prototype.addPlayerSprite = function addPlayerSprite(playerPos) {
   const playerSprite = new PlayerSprite(this.players[0].pos);
   this.playerSprite = playerSprite;
+};
+
+Game.prototype.spawnEnemy = function spawnEnemy() {
+  if (!this.starting && !this.gameOver) {
+    if (this.enemies.length < this.maxEnemies && this.enemySpawnCooldown === 0) {
+      this.enemySpawnCooldown = 200 - 2*this.enemies.length;
+      this.maxEnemies = 3 + Math.floor(this.enemies.length / 10);
+      this.currentEnemyIndex += 1;
+      const newEnemyPos = this.getNewEnemyPos();
+      const enemy = new Enemy(newEnemyPos, this.currentEnemyIndex);
+      this.enemies.push(enemy);
+      console.log("spawned enemy", enemy, this.enemies)
+    } else {
+      this.enemySpawnCooldown -= 1;
+    }
+  } else {
+    return;
+  }
+};
+
+Game.prototype.getNewEnemyPos = function getNewEnemyPos() {
+  const randVal = Math.ceil(Math.random() * 10);
+  if (randVal <= 5) {
+    return [-30, 450]
+  } else if (randVal <= 8) {
+    return [730, 450]
+  } else {
+    return [450, 0]
+  }
 };
 
 module.exports = Game;

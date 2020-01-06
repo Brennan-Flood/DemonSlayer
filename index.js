@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
       game.startAttack();
     } else if (evt.keyCode === 16) {
       game.shiftKey();
+    } else if (evt.keyCode === 13){
+      game.restart();;
     }
   }, false)
 
