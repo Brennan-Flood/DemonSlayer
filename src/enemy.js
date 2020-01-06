@@ -7,7 +7,9 @@ function Enemy(pos, id) {
   this.radius = 30;
   this.jumping = false;
   this.playerPos = null
-  this.runSpeed = 1;
+  this.baseRunspeed = 1;
+  this.harderType = false;
+  this.runSpeed = this.baseRunspeed;
   this.jumpSpeed = -22;
   this.jumpCooldown = 0;
   this.id = id;

@@ -8,10 +8,13 @@ const PlayerSprite = require("./player_sprite");
 const GameOver = require("./game_over");
 const StartMenu = require("./start_menu");
 const Score = require("./score");
+const PlatformSprite = require("./platform_sprite");
+
 function Game(ctx) {
   this.background = new Background();
   this.players = [];
-  this.platforms= [];
+  this.platforms = [];
+  this.platformSprites = [];
   this.playerPos = null;
   this.playerAttack = null;
   this.enemies = [];
@@ -150,9 +153,18 @@ Game.prototype.addPlatforms = function addPlatforms(){
   let platform1 = new Platform([25, 350]);
   let platform2 = new Platform([250, 200]);
   let platform3 = new Platform([475, 350]);
+
+  let platformSprite1 = new PlatformSprite([25, 350]);
+  let platformSprite2 = new PlatformSprite([250, 200]);
+  let platformSprite3 = new PlatformSprite([475, 350]);
+
   this.platforms.push(platform1);
+  this.platformSprites.push(platformSprite1);
   this.platforms.push(platform2);
+  this.platformSprites.push(platformSprite2);
   this.platforms.push(platform3);
+  this.platformSprites.push(platformSprite3);
+
 };
 
 Game.prototype.addPlayerAttack = function addPlayerAttack() {
@@ -176,7 +188,7 @@ Game.prototype.addScore = function addScore() {
 };  
 
 Game.prototype.objects = function objects() {
-  return [].concat(this.platforms).concat(this.players);
+  return [].concat(this.platforms).concat(this.platformSprites).concat(this.players);
 };
 
 Game.prototype.move = function move(dt) {
