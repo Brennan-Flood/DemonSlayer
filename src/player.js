@@ -1,7 +1,7 @@
 const Util = require("./util");
 
 function Player() {
-  this.pos = [300, 300];
+  this.pos = [350, 200];
   this.vel = [0, 1]
   this.radius = 30;
   this.grav = 1;

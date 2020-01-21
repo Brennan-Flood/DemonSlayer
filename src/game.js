@@ -175,12 +175,14 @@ Game.prototype.addPlayerAttack = function addPlayerAttack() {
 Game.prototype.addEnemies = function addEnemies() {
   let pos1 = [75, 300];
   let pos3 = [625, 300];
-
+  let rng = Math.random();
+  if (rng > 0.5) {
   let enemy1 = new Enemy(pos1, 1);
-  let enemy3 = new Enemy(pos3, 3);
-
   this.enemies.push(enemy1);
+  } else {
+  let enemy3 = new Enemy(pos3, 3);
   this.enemies.push(enemy3);
+  }
 };
 
 Game.prototype.addScore = function addScore() {
@@ -294,15 +296,18 @@ Game.prototype.addPlayerSprite = function addPlayerSprite(playerPos) {
 Game.prototype.spawnEnemy = function spawnEnemy() {
   if (!this.starting && !this.gameOver) {
     console.log(this.enemySpawnCooldown)
-
+    console.log(this.score.score)
     if (this.enemies.length < this.maxEnemies && this.enemySpawnCooldown === 0) {
-      this.enemySpawnCooldown = 200 - 2*this.enemies.length;
-      this.maxEnemies = 3 + Math.floor(this.enemies.length / 10);
+      if (this.score.score >= 200) {
+        this.enemySpawnCooldown = 10;
+      } else {
+        this.enemySpawnCooldown = 200 - 2 * this.score.score;
+      }
+      this.maxEnemies = 3 + Math.floor(this.score.score / 10);
       this.currentEnemyIndex += 1;
       const newEnemyPos = this.getNewEnemyPos();
       const enemy = new Enemy(newEnemyPos, this.currentEnemyIndex);
       this.enemies.push(enemy);
-      console.log("spawned enemy", enemy, this.enemies)
     } else if (this.enemySpawnCooldown === 0) {
       return;
     } else {
