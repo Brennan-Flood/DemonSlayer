@@ -56,6 +56,18 @@ Game.prototype.restart = function restart() {
   this.addScore();
 };
 
+Game.prototype.returnToStartMenu = function returnToStartMenu() {
+  this.starting = true;
+  this.players = [];
+  this.platforms = [];
+  this.enemies = [];
+  this.player = null;
+  this.playerAttack = null;
+  this.gameOver = false;
+  this.score = null;
+  this.startMenu = new StartMenu();
+};
+
 Game.prototype.draw = function draw(ctx) {
   ctx.clearRect(0, 0, Game.WIDTH, Game.HEIGHT);
   ctx.drawImage(this.background.image, 0, 0);

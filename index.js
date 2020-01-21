@@ -22,7 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (evt.keyCode === 16) {
       game.shiftKey();
     } else if (evt.keyCode === 13){
-      game.restart();;
+      game.restart();
+    } else if (evt.keyCode === 27) {
+      game.returnToStartMenu();
     }
   }, false)
 

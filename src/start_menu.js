@@ -15,6 +15,10 @@ StartMenu.prototype.draw = function draw(ctx) {
   ctx.fillStyle = "gold";
   ctx.textAlign = "center";
   ctx.fillText("-Press 'return' to start playing, or reset at any time", 700 / 2, 540 / 2);
+  ctx.font = "16px Open Sans";
+  ctx.fillStyle = "gold";
+  ctx.textAlign = "center";
+  ctx.fillText("-Press 'esc' to return to the start menu", 700 / 2, 600 / 2);
 };
 
 StartMenu.prototype.move = function move() {
