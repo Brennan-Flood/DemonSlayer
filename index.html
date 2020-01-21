@@ -3,38 +3,43 @@
 
 <head>
   <title>DemonSlayer</title>
-  <style>
-    canvas {
-      margin-top: 100px;
-      border: 1px solid black;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: rgb(0, 182, 206);
-    }
-    div {
-      display: block;
-    }
-    #canvas-background {
-      visibility: hidden;
-      height: 0px;
-      width: 0px;
-    }
-  
-  </style>
-<link href="https://fonts.googleapis.com/css?family=Bangers|Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Bangers|Open+Sans&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/f2795b618c.js" crossorigin="anonymous"></script>
+  <link href="assets/App.css" rel="stylesheet" />
 </head>
 
 <body>
-    <h1>DemonSlayer</h1>
-  <div>
-  <canvas id="game-canvas" height="480" width="700" ></canvas>
+  <h1 class="title">DemonSlayer</h1>
+  <canvas id="game-canvas" height="480" width="700" ></canvas>  
+  <div class="author-header">
+    <h3>Created by Brennan Flood</h3>
+      <div class="author-links">
+        <a href="https://github.com/Brennan-Flood"><i class="fab fa-github-square"></i></a>
+        <a href="https://www.linkedin.com/in/brennan-flood/"><i class="fab fa-linkedin"></i></a>
+      </div>
   </div>
   </br>
   <img id="canvas-background" src="assets/Dimensional_Infinity_Fortress_Anime.jpg" />
   <script src="./bundle.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+  
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCevPMx_ZFfDalCPmbw1iJouxPA0uEQOKc",
+      authDomain: "demonslayer-574aa.firebaseapp.com",
+      databaseURL: "https://demonslayer-574aa.firebaseio.com",
+      projectId: "demonslayer-574aa",
+      storageBucket: "demonslayer-574aa.appspot.com",
+      messagingSenderId: "421956440772",
+      appId: "1:421956440772:web:e62edcb02e38d98ac9ef91",
+      measurementId: "G-K8MXYX47CB"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
 </body>
 
 </html>
