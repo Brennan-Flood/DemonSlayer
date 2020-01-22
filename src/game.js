@@ -364,11 +364,13 @@ Game.prototype.spawnEnemy = function spawnEnemy() {
 Game.prototype.getNewEnemyPos = function getNewEnemyPos() {
   const randVal = Math.ceil(Math.random() * 10);
   if (randVal <= 5) {
-    return [-30, 420]
-  } else if (randVal <= 8) {
-    return [730, 420]
+    return [-30, 420];
+  } else if (randVal <= 7) {
+    return [730, 420];
+  } else if (randVal <= 2) {
+    return [0, 0];
   } else {
-    return [0, 0]
+    return [730, 0];
   }
 };
 
@@ -377,6 +379,7 @@ Game.prototype.playAttackSound = function playAttackSound() {
     this.attackSound = document.createElement("audio");
     this.attackSound.src = "assets/sounds/swing.mp3";
     this.attackSound.setAttribute("preload", "auto");
+    this.attackSound.volume = "0.3"
     this.attackSound.setAttribute("controls", "none");
     this.attackSound.style.display = "none";
     document.body.appendChild(this.attackSound);
@@ -394,6 +397,7 @@ Game.prototype.playDeathSound = function playDeathSound() {
   this.deathSound = document.createElement("audio");
   this.deathSound.src = "assets/sounds/oof.wav";
   this.deathSound.setAttribute("preload", "auto");
+  this.deathSound.volume = "0.3"
   this.deathSound.setAttribute("controls", "none");
   this.deathSound.style.display = "none";
   document.body.appendChild(this.deathSound);
@@ -409,6 +413,7 @@ Game.prototype.playSkellyDeathSound = function playSkellyDeathSound() {
   this.skellyDeathSound = document.createElement("audio");
   this.skellyDeathSound.src = "assets/sounds/skelly_death.wav";
   this.skellyDeathSound.setAttribute("preload", "auto");
+  this.skellyDeathSound.volume = "0.3"
   this.skellyDeathSound.setAttribute("controls", "none");
   this.skellyDeathSound.style.display = "none";
   document.body.appendChild(this.skellyDeathSound);
@@ -424,6 +429,7 @@ Game.prototype.playRedDeathSound = function playSkellyDeathSound() {
   this.redDeathSound = document.createElement("audio");
   this.redDeathSound.src = "assets/sounds/red_death.wav";
   this.redDeathSound.setAttribute("preload", "auto");
+  this.redDeathSound.volume = "0.3"
   this.redDeathSound.setAttribute("controls", "none");
   this.redDeathSound.style.display = "none";
   document.body.appendChild(this.redDeathSound);
