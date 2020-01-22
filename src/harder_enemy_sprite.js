@@ -11,6 +11,7 @@ function EnemySprite(pos) {
   this.animationFrame = 40;
   this.lastDirection = null;
   this.currentSpriteSheet = this.reversedSpriteSheet;
+  this.frameCycle = 30;
 }
 
 EnemySprite.prototype.draw = function draw(ctx, enemyVel) {
@@ -35,22 +36,27 @@ EnemySprite.prototype.draw = function draw(ctx, enemyVel) {
 
 EnemySprite.prototype.move = function move(pos) {
   this.pos = pos;
+  if (this.frameCycle <= 0) {
+    this.frameCycle = 30;
+  } else {
+    this.frameCycle -= 1;
+  }
 };
 
 EnemySprite.prototype.getSpriteInfo = function getSpriteInfo(enemyVel) {
   if (enemyVel[1] <= 2 && enemyVel[1] >= 0) {
     if (this.lastDirection === "right") {
       this.currentSpriteSheet = this.reversedSpriteSheet;
-      this.srcPos = [1011, 781];
-      this.srcDim = [33, 53];
+      this.srcPos = (this.frameCycle > 15 ? [1011, 781] : [729, 781]);
+      this.srcDim = (this.frameCycle > 15 ? [33, 53] : [42, 53]);
       this.destPos = this.pos;
-      this.destDim = [70, 120];
+      this.destDim = (this.frameCycle > 15 ? [70, 120] : [75, 120]);
     } else {
       this.currentSpriteSheet = this.spriteSheet;
-      this.srcPos = [0, 781];
-      this.srcDim = [33, 53];
+      this.srcPos = ( this.frameCycle > 15 ? [0, 781] : [270, 781] );
+      this.srcDim = ( this.frameCycle > 15 ? [33, 53] : [42, 53] );
       this.destPos = this.pos;
-      this.destDim = [70, 120];
+      this.destDim = (this.frameCycle > 15 ? [70, 120] : [75, 120]);
     }
   } else {
     if (this.lastDirection === "right") {

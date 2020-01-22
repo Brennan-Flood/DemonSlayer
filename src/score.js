@@ -3,18 +3,18 @@ function Score() {
 };
 
 Score.prototype.draw = function draw(ctx) {
-  ctx.font = "15px Comic Sans MS";
-  ctx.fillStyle = "red";
+  ctx.font = "16px Open Sans";
+  ctx.fillStyle = "gold";
   ctx.textAlign = "center";
-  ctx.fillText(`Demons Slain: ${this.score}`, 60, 15);
+  ctx.fillText(`Demons Slain:  ${this.score}`, 65, 16);
 };
 
 Score.prototype.move = function move() {
 
 };
 
-Score.prototype.addToScore = function addToScore() {
-  this.score += 1;
+Score.prototype.addToScore = function addToScore(val) {
+  this.score += val;
 };
 
 module.exports = Score;

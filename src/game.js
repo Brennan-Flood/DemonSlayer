@@ -9,6 +9,7 @@ const GameOver = require("./game_over");
 const StartMenu = require("./start_menu");
 const Score = require("./score");
 const PlatformSprite = require("./platform_sprite");
+const ScorePopup = require("./score_popup");
 
 function Game(ctx) {
   this.background = new Background();
@@ -18,6 +19,7 @@ function Game(ctx) {
   this.playerPos = null;
   this.playerAttack = null;
   this.enemies = [];
+  this.scorePopups = [];
   this.playerDirection = null;
   this.enemyTimeout = 50;
   this.player;
@@ -49,6 +51,7 @@ Game.prototype.restart = function restart() {
   this.playerAttack = null;
   this.gameOver = false;
   this.score = null;
+  this.enemySpawnCooldown = 200;
   this.addPlayer();
   this.addPlatforms();
   this.addPlayerAttack();
@@ -65,6 +68,7 @@ Game.prototype.returnToStartMenu = function returnToStartMenu() {
   this.playerAttack = null;
   this.gameOver = false;
   this.score = null;
+  this.enemySpawnCooldown = 200;
   this.startMenu = new StartMenu();
 };
 
@@ -102,6 +106,9 @@ Game.prototype.draw = function draw(ctx) {
   );
   this.playerSprite.draw(ctx);
   this.score.draw(ctx);
+  this.scorePopups.forEach((scorePopup) => {
+    scorePopup.draw(ctx);
+  });
   if (this.player.dead) {
     this.gameOver = true;
     this.gameOverObject.draw(ctx);
@@ -219,6 +226,13 @@ Game.prototype.move = function move(dt) {
   })
   this.playerAttack.move(this.playerPos);
   this.playerSprite.move(this.player.pos);
+  this.scorePopups.forEach((scorePopup) => {
+    if (scorePopup.timeLeft <= 0) {
+      this.scorePopups.shift();
+    } else {
+      scorePopup.move(dt);
+    }
+  })
   }
 };
 
@@ -276,9 +290,17 @@ Game.prototype.playerAttackCollision = function playerAttackCollision(enemy) {
 Game.prototype.killEnemy = function killEnemy(enemyId) {
   
   const newEnemiesArr = [];
+  let val;
   this.enemies.forEach((enemy, i) => {
   if (enemy.id === enemyId) {
-      this.score.addToScore();
+    
+      if (enemy.harderType) {
+        val = 2;
+      } else {
+        val = 1;
+      }
+      this.score.addToScore(val);
+      this.scorePopups.push(new ScorePopup(val))
     } else {
       newEnemiesArr.push(enemy);
     }
