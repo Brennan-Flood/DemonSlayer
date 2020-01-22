@@ -307,8 +307,6 @@ Game.prototype.addPlayerSprite = function addPlayerSprite(playerPos) {
 
 Game.prototype.spawnEnemy = function spawnEnemy() {
   if (!this.starting && !this.gameOver) {
-    console.log(this.enemySpawnCooldown)
-    console.log(this.score.score)
     if (this.enemies.length < this.maxEnemies && this.enemySpawnCooldown === 0) {
       if (this.score.score >= 200) {
         this.enemySpawnCooldown = 10;
@@ -333,9 +331,9 @@ Game.prototype.spawnEnemy = function spawnEnemy() {
 Game.prototype.getNewEnemyPos = function getNewEnemyPos() {
   const randVal = Math.ceil(Math.random() * 10);
   if (randVal <= 5) {
-    return [-30, 450]
+    return [-30, 420]
   } else if (randVal <= 8) {
-    return [730, 450]
+    return [730, 420]
   } else {
     return [0, 0]
   }

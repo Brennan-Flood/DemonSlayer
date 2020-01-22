@@ -1,19 +1,32 @@
 const Util = require("./util");
 const EnemySprite = require("./enemy_sprite");
+const HarderEnemySprite = require("./harder_enemy_sprite");
 function Enemy(pos, id) {
+  const hardVal = Math.random();
   this.pos = pos;
   this.vel = [0, 1];
   this.grav = 1;
-  this.radius = 30;
   this.jumping = false;
   this.playerPos = null
-  this.baseRunspeed = 1;
-  this.harderType = false;
+  if (hardVal > 0.8) {
+    this.harderType = true;
+    this.sprite = new HarderEnemySprite(this.pos);
+    this.baseRunspeed = 3;
+    this.radius = 50;
+    this.jumpSpeed = -22;
+
+
+  } else {
+    this.harderType = false;
+    this.sprite = new EnemySprite(this.pos);
+    this.baseRunspeed = 1;
+    this.radius = 30;
+    this.jumpSpeed = -16;
+
+  }
   this.runSpeed = this.baseRunspeed;
-  this.jumpSpeed = -22;
-  this.jumpCooldown = 0;
+  this.jumpCooldown = 80;
   this.id = id;
-  this.sprite = new EnemySprite(this.pos);
   this.plusOrMinus = Math.random() < 0.5 ? -1 : 1;
   this.onPlatformCooldown = 0;
 }
@@ -33,8 +46,8 @@ const NORMAL_FRAME_TIME_DELTA = 1000 / 60;
 Enemy.prototype.move = function move(dt, playerPos, playerIsDead) {
   if (this.vel[1] < 0) {
     this.jumping = true;
-  } else if (this.pos[1] + this.vel[1] + 1 >= 465) {
-    this.vel[1] = 450 - this.pos[1];
+  } else if (this.pos[1] + this.vel[1] + 1 >= 480 - this.radius) {
+    this.vel[1] = 480 - this.radius - this.pos[1];
     this.jumping = false;
   } else if (Util.atFloor(this)) {
     this.vel[1] = 0;
@@ -125,7 +138,7 @@ Enemy.prototype.playerUnderneathPlatform = function playerUnderneathPlatform() {
 };
 
 Enemy.prototype.getFaster = function getFaster(demonsSlain) {
-  this.runSpeed = 1 + demonsSlain / 20;
+  this.runSpeed = this.baseRunspeed + demonsSlain / 20;
 };
 
 module.exports = Enemy;
