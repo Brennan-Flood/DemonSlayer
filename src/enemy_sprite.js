@@ -35,6 +35,9 @@ EnemySprite.prototype.draw = function draw(ctx, enemyVel) {
 
 EnemySprite.prototype.move = function move(pos) {
   this.pos = pos;
+  if (this.animationFrame <= 0) {
+    this.animationFrame = 40;
+  }
 };
 
 EnemySprite.prototype.getSpriteInfo = function getSpriteInfo(enemyVel) {
@@ -55,18 +58,19 @@ EnemySprite.prototype.getSpriteInfo = function getSpriteInfo(enemyVel) {
   } else {
     if (this.lastDirection === "right") {
       this.currentSpriteSheet = this.reversedSpriteSheet;
-      this.srcPos = [785, 54];
+      this.srcPos = (this.animationFrame > 15 ? [786, 54] : [961, 54]);
       this.srcDim = [25, 46];
       this.destPos = this.pos;
       this.destDim = [50, 80];
     } else {
       this.currentSpriteSheet = this.spriteSheet;
-      this.srcPos = [230, 54];
+      this.srcPos = (this.animationFrame > 15 ? [230, 54] : [55, 54]);
       this.srcDim = [25, 46];
       this.destPos = this.pos;
       this.destDim = [50, 80];
     }
   }
+  this.animationFrame -= 1;
 };
 
 module.exports = EnemySprite;

@@ -63,3 +63,6 @@ div {
   color: black;
 }
 
+.game-audio {
+  visibility: hidden;
+}

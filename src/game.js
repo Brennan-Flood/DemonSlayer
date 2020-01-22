@@ -81,6 +81,10 @@ Game.prototype.draw = function draw(ctx) {
   this.objects().forEach(object => {
     object.draw(ctx);
   });
+
+  if (this.playerAttack.attackTimeLeft === 30) {
+    this.playAttackSound();
+  }
   
   this.enemies.forEach((enemy) => {
       this.enemyHitPlayer(enemy);
@@ -296,8 +300,10 @@ Game.prototype.killEnemy = function killEnemy(enemyId) {
     
       if (enemy.harderType) {
         val = 2;
+        this.playRedDeathSound();
       } else {
         val = 1;
+        this.playSkellyDeathSound();
       }
       this.score.addToScore(val);
       this.scorePopups.push(new ScorePopup(val))
@@ -319,6 +325,11 @@ Game.prototype.enemyHitPlayer = function enemyHitPlayer(enemy) {
 
 Game.prototype.killPlayer = function killPlayer() {
   this.players[0].dead = true;
+
+  if (this.gameOver === false) {
+    this.playDeathSound();
+  }
+
   this.gameOver = true;
 };
 
@@ -359,6 +370,68 @@ Game.prototype.getNewEnemyPos = function getNewEnemyPos() {
   } else {
     return [0, 0]
   }
+};
+
+Game.prototype.playAttackSound = function playAttackSound() {
+    if (this.attackSound === undefined) {
+    this.attackSound = document.createElement("audio");
+    this.attackSound.src = "assets/sounds/swing.mp3";
+    this.attackSound.setAttribute("preload", "auto");
+    this.attackSound.setAttribute("controls", "none");
+    this.attackSound.style.display = "none";
+    document.body.appendChild(this.attackSound);
+    }
+    this.play = function () {
+      this.attackSound.play();
+    }
+  
+    this.play();
+  
+};
+
+Game.prototype.playDeathSound = function playDeathSound() {
+  if (this.deathSound === undefined) {
+  this.deathSound = document.createElement("audio");
+  this.deathSound.src = "assets/sounds/oof.wav";
+  this.deathSound.setAttribute("preload", "auto");
+  this.deathSound.setAttribute("controls", "none");
+  this.deathSound.style.display = "none";
+  document.body.appendChild(this.deathSound);
+  }
+  this.play = function () {
+    this.deathSound.play();
+  }
+  this.play();
+};
+
+Game.prototype.playSkellyDeathSound = function playSkellyDeathSound() {
+  if (this.skellyDeathSound === undefined) {
+  this.skellyDeathSound = document.createElement("audio");
+  this.skellyDeathSound.src = "assets/sounds/skelly_death.wav";
+  this.skellyDeathSound.setAttribute("preload", "auto");
+  this.skellyDeathSound.setAttribute("controls", "none");
+  this.skellyDeathSound.style.display = "none";
+  document.body.appendChild(this.skellyDeathSound);
+  }
+  this.play = function () {
+    this.skellyDeathSound.play();
+  }
+  this.play();
+};
+
+Game.prototype.playRedDeathSound = function playSkellyDeathSound() {
+  if (this.redDeathSound === undefined) {
+  this.redDeathSound = document.createElement("audio");
+  this.redDeathSound.src = "assets/sounds/red_death.wav";
+  this.redDeathSound.setAttribute("preload", "auto");
+  this.redDeathSound.setAttribute("controls", "none");
+  this.redDeathSound.style.display = "none";
+  document.body.appendChild(this.redDeathSound);
+  }
+  this.play = function () {
+    this.redDeathSound.play();
+  }
+  this.play();
 };
 
 module.exports = Game;
