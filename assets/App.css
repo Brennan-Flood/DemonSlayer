@@ -7,14 +7,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color:rgb(43, 195, 206);
-  background-image:
+  /* background-color:rgb(43, 195, 206); */
+  background-color: black;
+  /* background-image:
   radial-gradient(circle at 100% 150%, rgb(43, 195, 206) 24%, white 24%, white 28%, rgb(43, 195, 206) 28%, rgb(43, 195, 206) 36%, white 36%, white 40%, transparent 40%, transparent),
   radial-gradient(circle at 0    150%, rgb(43, 195, 206) 24%, white 24%, white 28%, rgb(43, 195, 206) 28%, rgb(43, 195, 206) 36%, white 36%, white 40%, transparent 40%, transparent),
   radial-gradient(circle at 50%  100%, white 10%, rgb(43, 195, 206) 10%, rgb(43, 195, 206) 23%, white 23%, white 30%, rgb(43, 195, 206) 30%, rgb(43, 195, 206) 43%, white 43%, white 50%, rgb(43, 195, 206) 50%, rgb(43, 195, 206) 63%, white 63%, white 71%, transparent 71%, transparent),
   radial-gradient(circle at 100% 50%, white 5%, rgb(43, 195, 206) 5%, rgb(43, 195, 206) 15%, white 15%, white 20%, rgb(43, 195, 206) 20%, rgb(43, 195, 206) 29%, white 29%, white 34%, rgb(43, 195, 206) 34%, rgb(43, 195, 206) 44%, white 44%, white 49%, transparent 49%, transparent),
-  radial-gradient(circle at 0    50%, white 5%, rgb(43, 195, 206) 5%, rgb(43, 195, 206) 15%, white 15%, white 20%, rgb(43, 195, 206) 20%, rgb(43, 195, 206) 29%, white 29%, white 34%, rgb(43, 195, 206) 34%, rgb(43, 195, 206) 44%, white 44%, white 49%, transparent 49%, transparent);
-  background-size: 100px 50px;
+  radial-gradient(circle at 0    50%, white 5%, rgb(43, 195, 206) 5%, rgb(43, 195, 206) 15%, white 15%, white 20%, rgb(43, 195, 206) 20%, rgb(43, 195, 206) 29%, white 29%, white 34%, rgb(43, 195, 206) 34%, rgb(43, 195, 206) 44%, white 44%, white 49%, transparent 49%, transparent); */
+  /* background-size: 100px 50px; */
 }
 
 div {

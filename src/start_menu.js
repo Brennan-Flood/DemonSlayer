@@ -22,7 +22,7 @@ StartMenu.prototype.draw = function draw(ctx) {
   ctx.font = "16px Open Sans";
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
-  ctx.fillText("-Press 'esc' to return to the main menu", 700 / 2, 540 / 2);
+  ctx.fillText("-Use 'esc' to return to the main menu", 700 / 2, 540 / 2);
 };
 
 StartMenu.prototype.move = function move() {
