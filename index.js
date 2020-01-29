@@ -9,13 +9,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const ctx = cvs.getContext("2d");
   const game = new Game(ctx);
   document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 87) {
+    if (evt.keyCode === 87 || evt.keyCode === 38  ) {
       game.upKey();
-    } else if (evt.keyCode === 65) {
+    } else if (evt.keyCode === 65 || evt.keyCode === 37 ) {
       game.leftKey();
     } else if (evt.keyCode === 83) {
-      console.log("s")
-    } else if (evt.keyCode === 68) {
+      
+    } else if (evt.keyCode ===  68 || evt.keyCode === 39 ) {
       game.rightKey();
     } else if (evt.keyCode === 32) {
       game.startAttack();
@@ -25,13 +25,15 @@ document.addEventListener("DOMContentLoaded", function () {
       game.restart();
     } else if (evt.keyCode === 27) {
       game.returnToStartMenu();
+    } else {
+
     }
   }, false)
 
   document.addEventListener('keyup', function(evt) {
-    if (evt.keyCode === 65) {
+    if (evt.keyCode === 65 || evt.keyCode === 37 ) {
       game.stopWalking("left");
-    } else if (evt.keyCode === 68) {
+  } else if (evt.keyCode === 68 || evt.keyCode === 39 ) {
       game.stopWalking("right");
     } else if (evt.keyCode === 16) {
       game.stopDash();
