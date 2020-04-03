@@ -295,6 +295,10 @@ Game.prototype.killEnemy = function killEnemy(enemyId) {
   
   const newEnemiesArr = [];
   let val;
+  const currentPlayerPos = this.playerPos.map((posN) => {
+    return posN;
+  })
+  console.log(currentPlayerPos);
   this.enemies.forEach((enemy, i) => {
   if (enemy.id === enemyId) {
     
@@ -306,7 +310,7 @@ Game.prototype.killEnemy = function killEnemy(enemyId) {
         this.playSkellyDeathSound();
       }
       this.score.addToScore(val);
-      this.scorePopups.push(new ScorePopup(val))
+      this.scorePopups.push(new ScorePopup(val, currentPlayerPos))
     } else {
       newEnemiesArr.push(enemy);
     }

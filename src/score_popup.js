@@ -1,5 +1,5 @@
-function ScorePopup(val) {
-  this.pos = [650, 50]
+function ScorePopup(val, pos) {
+  this.pos = pos;
   this.value = val;
   this.timeLeft = 60;
   this.vel = [0, -1];
