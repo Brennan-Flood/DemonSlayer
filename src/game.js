@@ -12,6 +12,7 @@ const PlatformSprite = require("./platform_sprite");
 const ScorePopup = require("./score_popup");
 
 function Game(ctx) {
+  // assign game objects to the Game function
   this.background = new Background();
   this.players = [];
   this.platforms = [];
@@ -39,10 +40,12 @@ Game.HEIGHT = 480;
 Game.FPS = 32;
 
 Game.prototype.addStartMenu = function addStartMenu() {
+  
   this.startMenu = new StartMenu();
 };
 
 Game.prototype.restart = function restart() {
+  // reset the initial game variables to their starting values
   this.starting = false;
   this.players = [];
   this.platforms = [];
@@ -73,7 +76,10 @@ Game.prototype.returnToStartMenu = function returnToStartMenu() {
 };
 
 Game.prototype.draw = function draw(ctx) {
+  // function responsible for rendering the objects
   ctx.clearRect(0, 0, Game.WIDTH, Game.HEIGHT);
+
+  //draw the main canvas here
   ctx.drawImage(this.background.image, 0, 0);
   if (this.starting) {
     this.startMenu.draw(ctx);
