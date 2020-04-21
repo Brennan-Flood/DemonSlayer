@@ -79,7 +79,7 @@ Game.prototype.draw = function draw(ctx) {
   // function responsible for rendering the objects
   ctx.clearRect(0, 0, Game.WIDTH, Game.HEIGHT);
 
-  //draw the main canvas here
+  //draw the main canvas element here
   ctx.drawImage(this.background.image, 0, 0);
   if (this.starting) {
     this.startMenu.draw(ctx);
@@ -88,13 +88,17 @@ Game.prototype.draw = function draw(ctx) {
     object.draw(ctx);
   });
 
+  
   if (this.playerAttack.attackTimeLeft === 30) {
     this.playAttackSound();
   }
   
+  // check for enemy collision against the player
   this.enemies.forEach((enemy) => {
       this.enemyHitPlayer(enemy);
   });
+
+  // check for player attack collision against all enemies
   if (this.playerAttack.attacking && !this.player.dead) {
     this.enemies.forEach((enemy) => {
       if (this.playerAttackCollision(enemy) === true) {
@@ -102,9 +106,12 @@ Game.prototype.draw = function draw(ctx) {
       }
     });
   }
+
+
   this.enemies.forEach(enemy => {
     enemy.draw(ctx);
   });
+
   this.playerSprite.getCurrentAnimationInfo(
     this.player.currentWalkingDirection, 
     this.player.currentAnimation, 
@@ -114,11 +121,15 @@ Game.prototype.draw = function draw(ctx) {
     this.playerAttack.attackTimeLeft, 
     this.player.dead
   );
+
   this.playerSprite.draw(ctx);
+
   this.score.draw(ctx);
+
   this.scorePopups.forEach((scorePopup) => {
     scorePopup.draw(ctx);
   });
+
   if (this.player.dead) {
     this.gameOver = true;
     this.gameOverObject.draw(ctx);
@@ -128,6 +139,7 @@ Game.prototype.draw = function draw(ctx) {
   }
 };
 
+// handle button inputs from player
 Game.prototype.upKey = function upKey() {
   if (!this.starting) {
   let player = this.players[0];
@@ -170,6 +182,7 @@ Game.prototype.stopWalking = function stopWalking(dir) {
   }
 };
 
+
 Game.prototype.addPlayer = function addPlayer() {
   const player = new Player();
   this.players.push(player);
@@ -205,6 +218,9 @@ Game.prototype.addEnemies = function addEnemies() {
   let pos1 = [75, 300];
   let pos3 = [625, 300];
   let rng = Math.random();
+
+  //randomly spawn enemies to the left or right of the player character
+
   if (rng > 0.5) {
   let enemy1 = new Enemy(pos1, 1);
   this.enemies.push(enemy1);
